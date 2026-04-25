@@ -135,8 +135,8 @@
     min-height: 640px;
   }
 
-  /* Portrait: face centred, anchored high so it shows in upper half */
-  .hero-c1__portrait { object-position: 50% 12%; }
+  /* Portrait: anchored right so face shows clearly in upper portion */
+  .hero-c1__portrait { object-position: 75% 15%; }
 
   /* Strong bottom-up gradient — bottom 40% is near-black for text readability */
   .hero-c1__overlay {
