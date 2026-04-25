@@ -129,12 +129,36 @@
 .hero-c1__scroll-arrow { font-size: 14px; }
 
 @media (max-width: 800px) {
-  .hero-c1 { height: 86vh; min-height: 560px; }
-  .hero-c1__type { left: 6%; right: 6%; top: auto; bottom: 8%; transform: none; }
-  .hero-c1__shout { font-size: 56px; }
-  .hero-c1__sub { font-size: 15px; }
+  /* Fill the full screen height on phones */
+  .hero-c1 { height: 100svh; min-height: 600px; }
+
+  /* Portrait: centre face, anchor top so head is visible in upper third */
+  .hero-c1__portrait { object-position: 50% 15%; }
+
+  /* Much stronger bottom-up gradient so text area is always readable */
+  .hero-c1__overlay {
+    background:
+      linear-gradient(
+        to top,
+        rgba(22, 20, 16, 0.97) 0%,
+        rgba(22, 20, 16, 0.88) 28%,
+        rgba(22, 20, 16, 0.55) 52%,
+        rgba(22, 20, 16, 0.15) 72%,
+        rgba(22, 20, 16, 0) 100%
+      );
+  }
+
+  /* Text sits in the solid-dark lower half */
+  .hero-c1__type {
+    left: 6%; right: 6%;
+    top: auto; bottom: 7%;
+    transform: none;
+  }
+
+  /* Slightly smaller headline so it fits comfortably */
+  .hero-c1__shout { font-size: 48px; }
+  .hero-c1__sub { font-size: 14px; margin-top: 14px; margin-bottom: 24px; max-width: 100%; }
   .hero-c1__scroll { display: none; }
-  .hero-c1__portrait { object-position: 85% 15%; }
 }
 
 /* Problem framing */
