@@ -1,0 +1,313 @@
+/* Services page */
+.services-hero {
+  position: relative;
+  min-height: 72vh;
+  display: flex; align-items: center;
+  padding: 160px 0 96px;
+  overflow: hidden;
+  color: var(--paper);
+}
+.services-hero__bg {
+  position: absolute; inset: -8% 0; z-index: 0;
+  will-change: transform;
+}
+.services-hero__bg .ph-image { position: absolute; inset: 0; aspect-ratio: unset !important; }
+.services-hero__overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right, rgba(22,20,16,0.92), rgba(22,20,16,0.62) 60%, rgba(22,20,16,0.45));
+}
+.services-hero__content { position: relative; z-index: 2; }
+.services-hero__title {
+  font-size: clamp(64px, 9vw, 144px);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  margin: 24px 0 36px;
+  color: var(--paper);
+  max-width: 16ch;
+}
+.services-hero__title .ochre { color: var(--ochre-light); }
+.services-hero__lead {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--paper-70);
+  max-width: 56ch;
+}
+
+/* =========== CS01 — Diagnostic featured card =========== */
+.dx-card {
+  position: relative;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 16px;
+  padding: 64px;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 64px;
+  align-items: start;
+  overflow: hidden;
+}
+.dx-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  background: var(--ochre);
+}
+@media (max-width: 960px) {
+  .dx-card { grid-template-columns: 1fr; padding: 40px; gap: 40px; }
+}
+.dx-card__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ochre-light);
+  margin-bottom: 28px;
+}
+.dx-card__dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--ochre-light);
+  display: inline-block;
+}
+.dx-card__shout {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(56px, 6.5vw, 96px);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--paper);
+  margin-bottom: 28px;
+}
+.dx-card__shout .ochre-light { color: var(--ochre-light); }
+.dx-card__sub {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.55;
+  color: var(--paper-70);
+  max-width: 44ch;
+}
+.dx-card__body { padding-top: 4px; }
+.dx-card__eyebrow {
+  color: var(--paper-50) !important;
+  margin-bottom: 28px;
+}
+.dx-card__eyebrow::before { background: var(--paper-50) !important; }
+.dx-deliverables {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.dx-deliv__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ochre-light);
+  margin-bottom: 8px;
+}
+.dx-deliv__body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--paper-70);
+  max-width: 48ch;
+}
+.dx-card__foot {
+  grid-column: 1 / -1;
+  margin-top: 24px;
+  padding-top: 32px;
+  border-top: 0.5px solid var(--rule-dark-light);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.dx-card__meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--paper-50);
+}
+
+/* =========== Divider =========== */
+.svc-divider-section {
+  padding: 80px 0 24px;
+  background: var(--paper);
+}
+.svc-divider { max-width: 720px; }
+.svc-divider__line {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.3;
+  color: var(--ink-100);
+  margin-top: 20px;
+  max-width: 32ch;
+  letter-spacing: -0.015em;
+}
+
+/* =========== CS02 — Stage stack =========== */
+.stage-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 0.5px solid var(--rule-light);
+}
+.stage-card {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 64px;
+  padding: 56px 0;
+  border-bottom: 0.5px solid var(--rule-light);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .stage-card { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+}
+.stage-card__num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 16px;
+}
+.stage-card__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(36px, 4vw, 56px);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink-100);
+}
+.stage-card__framing {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-70);
+  max-width: 56ch;
+  margin-bottom: 28px;
+}
+.stage-card__subs {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px 32px;
+}
+@media (max-width: 700px) { .stage-card__subs { grid-template-columns: 1fr; } }
+.stage-card__subs li {
+  padding: 10px 0;
+  border-top: 0.5px solid var(--rule-light);
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.4;
+}
+.stage-card__sub-label {
+  font-weight: 600;
+  color: var(--ink-100);
+  white-space: nowrap;
+}
+.stage-card__sub-dash { color: var(--ink-30); }
+.stage-card__sub-desc { color: var(--ink-50); }
+
+/* =========== CS05 — Fit qualifier =========== */
+.surface-paper { background: var(--paper); }
+.fit-header { margin-bottom: 48px; }
+.fit-title {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--ink-100);
+  margin-top: 20px;
+  max-width: 28ch;
+}
+.fit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+@media (max-width: 800px) { .fit-grid { grid-template-columns: 1fr; } }
+.fit-col {
+  padding: 32px;
+  border-radius: 12px;
+  background: var(--linen);
+}
+.fit-col--no {
+  background: var(--paper);
+  border: 0.5px dashed var(--rule-med);
+}
+.fit-col__label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--ochre);
+  margin-bottom: 20px;
+}
+.fit-col--no .fit-col__label { color: var(--ink-30); }
+.fit-col ul { list-style: none; }
+.fit-col li {
+  padding: 12px 0 12px 24px;
+  position: relative;
+  border-bottom: 0.5px dashed var(--rule-light);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-100);
+}
+.fit-col li:last-child { border-bottom: none; }
+.fit-col li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--ochre);
+  font-weight: 600;
+}
+.fit-col--no li::before { content: "—"; color: var(--ink-30); }
+.fit-col--no li { color: var(--ink-70); }
+
+/* CTA close */
+.cta-block {
+  max-width: 1100px;
+  padding: 40px 0;
+}
+.cta-block .shout-title {
+  font-size: clamp(44px, 6.4vw, 96px);
+  margin-bottom: 32px;
+}
+.cta-block .shout-title .ochre-light { color: var(--ochre-light); }
+.cta-block__lede {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--paper-70);
+  max-width: 56ch;
+  margin-bottom: 40px;
+}
+.cta-block__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.cta-block__sub {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--paper-50);
+  text-transform: uppercase;
+}

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip -l \"C:\\\\Users\\\\Laptop-577\\\\Downloads\\\\Bhargava- Porfolio.zip\")",
+      "Bash(unzip -o \"C:\\\\Users\\\\Laptop-577\\\\Downloads\\\\Bhargava- Porfolio.zip\" -d .)",
+      "Bash(python --version)",
+      "Bash(python3 --version)",
+      "Bash(python -m http.server 8080)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/index.html)",
+      "Bash(taskkill /F /IM python.exe)",
+      "Bash(python -c ' *)",
+      "Bash(gh --version)",
+      "Bash(vercel --version)",
+      "Bash(npm --version)",
+      "Bash(git --version)",
+      "Bash(git init *)",
+      "Bash(git add *)"
+    ]
+  }
+}
