@@ -129,33 +129,35 @@
 .hero-c1__scroll-arrow { font-size: 14px; }
 
 @media (max-width: 800px) {
-  /* Fill the full screen height on phones */
-  .hero-c1 { height: 100svh; min-height: 600px; }
+  /* 100dvh = dynamic viewport height, fills correctly on iOS Safari */
+  .hero-c1 {
+    height: 100dvh;
+    min-height: 640px;
+  }
 
-  /* Portrait: centre face, anchor top so head is visible in upper third */
-  .hero-c1__portrait { object-position: 50% 15%; }
+  /* Portrait: face centred, anchored high so it shows in upper half */
+  .hero-c1__portrait { object-position: 50% 12%; }
 
-  /* Much stronger bottom-up gradient so text area is always readable */
+  /* Strong bottom-up gradient — bottom 40% is near-black for text readability */
   .hero-c1__overlay {
     background:
       linear-gradient(
         to top,
         rgba(22, 20, 16, 0.97) 0%,
-        rgba(22, 20, 16, 0.88) 28%,
-        rgba(22, 20, 16, 0.55) 52%,
-        rgba(22, 20, 16, 0.15) 72%,
+        rgba(22, 20, 16, 0.92) 22%,
+        rgba(22, 20, 16, 0.65) 45%,
+        rgba(22, 20, 16, 0.2) 65%,
         rgba(22, 20, 16, 0) 100%
       );
   }
 
-  /* Text sits in the solid-dark lower half */
+  /* Text anchored lower so portrait breathes above it */
   .hero-c1__type {
     left: 6%; right: 6%;
-    top: auto; bottom: 7%;
+    top: auto; bottom: 5%;
     transform: none;
   }
 
-  /* Slightly smaller headline so it fits comfortably */
   .hero-c1__shout { font-size: 48px; }
   .hero-c1__sub { font-size: 14px; margin-top: 14px; margin-bottom: 24px; max-width: 100%; }
   .hero-c1__scroll { display: none; }
