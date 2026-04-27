@@ -5,6 +5,7 @@ import Link from 'next/link';
 import SiteNav from '../components/SiteNav';
 import LivingFooter from '../components/LivingFooter';
 import useRevealObserver from '../components/useRevealObserver';
+import PositioningQuoteReveal from '../components/PositioningQuoteReveal';
 
 /* ---------- Hero ---------- */
 function Hero() {
@@ -74,24 +75,6 @@ function MethodStrip() {
   );
 }
 
-/* ---------- Positioning quote ---------- */
-function PositioningQuote() {
-  return (
-    <section className="surface-linen section-pad-sm positioning-quote" data-screen-label="03 Positioning quote">
-      <div className="shell">
-        <div className="pq-block">
-          <div className="pq-eyebrow reveal"><span className="pq-rule" aria-hidden="true" />— THE POSITIONING</div>
-          <p className="pq-body reveal" data-delay="120">
-            Growth doesn&apos;t break because <span className="pq-strike">SEO stopped working</span> or <span className="pq-strike">ads got expensive</span>. It breaks because things are working in isolation — the intent is off, the message doesn&apos;t land, the value doesn&apos;t stick. I work at the seam where <span className="pq-accent">marketing decisions become business decisions</span>. <span className="pq-underline">That&apos;s the work.</span>
-          </p>
-          <div className="pq-sign reveal" data-delay="240">
-            <span className="pq-rule pq-rule--short" aria-hidden="true" />— BHARGAVA · HOW I LOOK AT GROWTH
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ---------- Featured work ---------- */
 const FEATURED_WORK = [
@@ -512,7 +495,7 @@ export default function HomePage() {
         <Hero />
         <MethodStrip />
         <div ref={methodSentinelRef} aria-hidden="true" style={{ height: 0, overflow: 'hidden' }} />
-        <PositioningQuote />
+        <PositioningQuoteReveal />
         <FeaturedWork />
         <ThreeStageServices sectionRef={servicesSectionRef} inView={inServices} />
         <NotesTeaser />

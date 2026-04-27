@@ -787,6 +787,11 @@
   color: var(--ink-100);
   margin-bottom: 36px;
 }
+/* Word spans injected by PositioningQuoteReveal — must not override parent styles */
+.pq-word {
+  display: inline;
+  /* inherit text-decoration, font-weight, border-bottom from parent spans */
+}
 .pq-strike {
   text-decoration: line-through;
   text-decoration-color: rgba(26, 26, 26, 0.5);
