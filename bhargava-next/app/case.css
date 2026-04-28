@@ -1,3 +1,70 @@
+/* ── Markdown body prose ─────────────────────────────────────── */
+.case-md h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(26px, 3vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--ink-100);
+  margin: 64px 0 20px;
+  padding-top: 48px;
+  border-top: 0.5px solid var(--rule-light);
+}
+.case-md h2:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+.case-md p {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--ink-70);
+  max-width: 64ch;
+  margin-bottom: 20px;
+}
+.case-md ul {
+  margin: 24px 0 28px 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.case-md ul li {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-70);
+  padding: 20px 24px;
+  background: var(--linen);
+  border-radius: var(--r-lg);
+  border-left: 3px solid var(--ochre);
+}
+.case-md ul li strong {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink-100);
+  margin-bottom: 6px;
+}
+.case-md strong {
+  font-weight: 700;
+  color: var(--ink-100);
+}
+.case-md p strong {
+  color: var(--ochre-deep);
+}
+
+/* ── Footer actions ──────────────────────────────────────────── */
+.case-actions {
+  padding: 56px 0 80px;
+  border-top: 0.5px solid var(--rule-light);
+}
+
 /* Case study */
 .case-opener {
   padding: 180px 0 120px;

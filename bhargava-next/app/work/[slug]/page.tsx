@@ -19,48 +19,67 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+const hasFullContent = (content: string) =>
+  content &&
+  content.trim() !== '' &&
+  content.trim() !== '<p>Full case study coming soon. The detailed write-up including methodology, data, and outcomes is being prepared.</p>';
+
 export default async function CasePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const work = await getWorkBySlug(slug);
   if (!work) notFound();
+
+  const hasContent = hasFullContent(work.content);
 
   return (
     <>
       <SiteNav current="work" dark />
       <RevealInit />
       <main>
-        {/* Case opener */}
+        {/* ── Dark opener: meta + title + standfirst only ── */}
         <section className="case-opener surface-ink on-dark">
           <div className="shell">
-            <div className="case-opener__meta">
+            <div className="case-opener__meta reveal">
               <span>{work.client}</span>
               <span className="case-opener__dot">·</span>
               <span>{work.type}</span>
               <span className="case-opener__dot">·</span>
               <span>{work.year}</span>
             </div>
-            <h1 className="case-opener__title shout-title">
+            <h1 className="case-opener__title shout-title reveal" data-delay="100">
               {work.title}
             </h1>
-            <p className="case-opener__standfirst">{work.standfirst}</p>
+            <p className="case-opener__standfirst reveal" data-delay="200">
+              {work.standfirst}
+            </p>
+          </div>
+        </section>
 
-            {/* Case body — renders full markdown if written, or placeholder */}
-            {work.content && work.content.trim() !== '<p>Full case study coming soon. The detailed write-up including methodology, data, and outcomes is being prepared.</p>' ? (
+        {/* ── Body: full content or placeholder ── */}
+        {hasContent ? (
+          <section className="case-body section-pad">
+            <div className="shell shell--narrow">
               <div
-                className="bio-prose reveal"
-                style={{ marginTop: 48, color: 'var(--paper)' }}
+                className="case-md reveal"
                 dangerouslySetInnerHTML={{ __html: work.content }}
               />
-            ) : (
-              <>
-                <div className="case-placeholder__status reveal" data-delay="200">
-                  <span className="case-placeholder__badge">Full write-up in progress</span>
-                  <p>The detailed case study including methodology, data, and outcomes is being prepared.</p>
-                </div>
-              </>
-            )}
+            </div>
+          </section>
+        ) : (
+          <section className="case-body section-pad-sm surface-ink on-dark">
+            <div className="shell">
+              <div className="case-placeholder__status reveal" data-delay="200">
+                <span className="case-placeholder__badge">Full write-up in progress</span>
+                <p>The detailed case study including methodology, data, and outcomes is being prepared.</p>
+              </div>
+            </div>
+          </section>
+        )}
 
-            <div className="case-placeholder__actions reveal" data-delay="340">
+        {/* ── Footer actions ── */}
+        <section className="case-actions">
+          <div className="shell">
+            <div className="case-placeholder__actions reveal">
               <Link href="/work" className="btn">← Back to all work</Link>
               <Link href="/contact" className="btn btn--ochre">Discuss a similar problem →</Link>
             </div>
