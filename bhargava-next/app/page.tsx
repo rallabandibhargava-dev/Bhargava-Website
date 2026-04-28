@@ -165,43 +165,21 @@ function WorkCard({ item, index }) {
   useEffect(() => {
     const el = tiltRef.current;
     if (!el) return;
-
-    // Skip tilt on touch devices
     if (window.matchMedia('(hover: none)').matches) return;
 
-    // Tween a plain proxy object — avoids GSAP 3.12+ warnings about rotateX/Y
-    // not being eligible as individual CSS transform properties.
     const proxy = { rx: 0, ry: 0 };
     const applyTransform = () => {
       el.style.transform = `rotateX(${proxy.rx}deg) rotateY(${proxy.ry}deg)`;
     };
-
     const onMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
       const ny = (e.clientY - rect.top)  / rect.height - 0.5;
-      gsap.to(proxy, {
-        ry: nx * 14,
-        rx: -ny * 9,
-        duration: 0.45,
-        ease: 'power2.out',
-        overwrite: 'auto',
-        onUpdate: applyTransform,
-      });
+      gsap.to(proxy, { ry: nx * 14, rx: -ny * 9, duration: 0.45, ease: 'power2.out', overwrite: 'auto', onUpdate: applyTransform });
     };
-
     const onLeave = () => {
-      gsap.to(proxy, {
-        rx: 0,
-        ry: 0,
-        duration: 0.6,
-        ease: 'power3.out',
-        overwrite: 'auto',
-        onUpdate: applyTransform,
-        onComplete: () => { el.style.transform = ''; },
-      });
+      gsap.to(proxy, { rx: 0, ry: 0, duration: 0.6, ease: 'power3.out', overwrite: 'auto', onUpdate: applyTransform, onComplete: () => { el.style.transform = ''; } });
     };
-
     el.addEventListener('mousemove', onMove);
     el.addEventListener('mouseleave', onLeave);
     return () => {
@@ -214,36 +192,53 @@ function WorkCard({ item, index }) {
 
   return (
     <div ref={tiltRef} className="work-card-tilt">
-      <Link href={`/work/${item.slug}`} className={`work-card work-card--${item.surface} reveal`} data-delay={(index * 100).toString()}>
-        <div className="work-card__media">
-          {item.image ? (
-            <img
-              src={item.image}
-              alt={item.title}
-              className="work-card__img"
-            />
-          ) : (
-            <div className={'ph-image img-reveal' + (item.surface === 'dim' ? ' ph-image--dark' : '')} style={{ aspectRatio: '16 / 11', width: '100%', height: '100%' }}>
-              <div className="ph-image__label">case image · {item.client.toLowerCase().replace(/ /g, '-')}</div>
-            </div>
-          )}
-          <div className="work-card__media-overlay" />
+      <Link
+        href={`/work/${item.slug}`}
+        className="work-card-full reveal"
+        data-delay={(index * 120).toString()}
+      >
+        {/* Full-bleed image */}
+        {item.image
+          ? <img src={item.image} alt={item.title} className="work-card-full__img" />
+          : <div className="work-card-full__ph" />
+        }
+        {/* Gradient overlay */}
+        <div className="work-card-full__gradient" />
+        {/* CASE STUDY badge */}
+        <span className="work-card-full__badge">Case Study</span>
+        {/* Bottom body */}
+        <div className="work-card-full__body">
+          <p className="work-card-full__meta">{item.client} · {item.year}</p>
+          <h3 className="work-card-full__title">{item.title}</h3>
+          <span className="work-card-full__cta">
+            Read the case <span className="work-card-full__arrow">↗</span>
+          </span>
         </div>
-        <div className="work-card__meta">
-          <div className="work-card__line">
-            <span>{item.client}</span><span className="work-card__dot">·</span>
-            <span>{item.type}</span><span className="work-card__dot">·</span>
-            <span>{item.year}</span>
-          </div>
-        </div>
-        <h3 className="work-card__title">{item.title}</h3>
-        <div className="work-card__read">Read case <span className="work-card__arrow">→</span></div>
       </Link>
     </div>
   );
 }
 
 function FeaturedWork() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const handleScroll = useCallback(() => {
+    const t = trackRef.current;
+    if (!t) return;
+    const slotW = t.scrollWidth / FEATURED_WORK.length;
+    const idx = Math.min(Math.round(t.scrollLeft / slotW), FEATURED_WORK.length - 1);
+    setActiveIdx(idx);
+  }, []);
+
+  const goTo = useCallback((idx: number) => {
+    const t = trackRef.current;
+    if (!t) return;
+    setActiveIdx(idx);
+    const slotW = t.scrollWidth / FEATURED_WORK.length;
+    t.scrollTo({ left: idx * slotW, behavior: 'smooth' });
+  }, []);
+
   return (
     <section className="section-pad" data-screen-label="03 Featured work">
       <div className="shell">
@@ -254,8 +249,31 @@ function FeaturedWork() {
           </div>
           <Link href="/work" className="section-head__right link-draw">EXPLORE MORE →</Link>
         </header>
-        <div className="work-grid">
+
+        {/* Desktop: 3-column grid */}
+        <div className="work-grid--desktop">
           {FEATURED_WORK.map((w, i) => <WorkCard key={w.slug} item={w} index={i} />)}
+        </div>
+      </div>
+
+      {/* Mobile: swipeable carousel */}
+      <div className="work-carousel">
+        <div className="work-carousel__track" ref={trackRef} onScroll={handleScroll}>
+          {FEATURED_WORK.map((w, i) => (
+            <div className="work-carousel__item" key={w.slug}>
+              <WorkCard item={w} index={i} />
+            </div>
+          ))}
+        </div>
+        <div className="work-carousel__dots" aria-hidden="true">
+          {FEATURED_WORK.map((_, i) => (
+            <button
+              key={i}
+              className={'work-carousel__dot' + (i === activeIdx ? ' is-active' : '')}
+              onClick={() => goTo(i)}
+              aria-label={`Go to card ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>

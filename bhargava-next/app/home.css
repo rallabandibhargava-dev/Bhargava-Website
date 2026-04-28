@@ -224,37 +224,32 @@
   white-space: nowrap;
 }
 
-/* Work grid (featured, 3 cards) */
-.work-grid {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr 1fr;
-  gap: 32px;
-  perspective: 1100px;  /* enables 3-D tilt on child cards */
-}
-@media (max-width: 960px) {
-  .work-grid { grid-template-columns: 1fr; gap: 48px; perspective: none; }
-}
-
-/* Tilt wrapper — takes the grid slot, passes clicks through to the card */
+/* ── Tilt wrapper ───────────────────────────────────────────── */
 .work-card-tilt {
   transform-style: preserve-3d;
   will-change: transform;
 }
 
-.work-card {
-  display: flex;
-  flex-direction: column;
-  /* hover lift handled by GSAP tilt on desktop; keep subtle lift on touch */
-  transition: box-shadow 0.3s var(--ease-soft);
+/* ── Full-bleed work card ───────────────────────────────────── */
+.work-card-full {
+  position: relative;
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 16 / 11;
+  background: var(--dim);
   cursor: pointer;
+  text-decoration: none;
+  /* Subtle ring on focus */
+  outline-offset: 3px;
 }
-/* Remove the static translateY hover so it doesn't fight GSAP tilt */
-@media (hover: none) {
-  .work-card:hover { transform: translateY(-3px); }
+/* First card taller on desktop for visual variety */
+.work-grid--desktop .work-card-tilt:first-child .work-card-full {
+  aspect-ratio: 4 / 3;
 }
 
-/* Real thumbnail image inside media wrapper */
-.work-card__img {
+/* Image */
+.work-card-full__img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -262,74 +257,172 @@
   object-fit: cover;
   object-position: center;
   display: block;
-  transition: transform 0.55s var(--ease-soft);
+  transition: transform 0.65s var(--ease-soft);
+  will-change: transform;
 }
-.work-card:hover .work-card__img {
-  transform: scale(1.04);
-}
+.work-card-full:hover .work-card-full__img { transform: scale(1.05); }
 
-.work-card__media {
-  position: relative;
-  border-radius: 12px;
-  overflow: hidden;
-  margin-bottom: 20px;
-  aspect-ratio: 16 / 11;
-  background: var(--linen);
-}
-.work-card:first-child .work-card__media { aspect-ratio: 4 / 3; }
-.work-card__media-overlay {
+/* Placeholder for no-image cards */
+.work-card-full__ph {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(22,20,16,0.35) 0%, transparent 40%);
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(232,149,88,0.09) 0px,
+      rgba(232,149,88,0.09) 1px,
+      transparent 1px,
+      transparent 16px
+    ),
+    var(--dim);
+}
+
+/* Gradient overlay — bottom heavy for legibility */
+.work-card-full__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(12, 9, 6, 0.92) 0%,
+    rgba(12, 9, 6, 0.55) 40%,
+    rgba(12, 9, 6, 0.12) 70%,
+    transparent 100%
+  );
   pointer-events: none;
 }
-.work-card__tag {
+
+/* "CASE STUDY" badge — top right */
+.work-card-full__badge {
   position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 2;
-}
-.work-card__meta {
+  top: 16px;
+  right: 16px;
+  z-index: 3;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 9px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink-50);
-  margin-bottom: 10px;
+  color: var(--paper);
+  background: rgba(22, 20, 16, 0.52);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  border: 0.5px solid rgba(250, 250, 247, 0.18);
+  transition: background 0.24s var(--ease-soft), border-color 0.24s var(--ease-soft);
 }
-.work-card__line { display: inline-flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.work-card__dot { color: var(--ink-30); }
-.work-card__title {
+.work-card-full:hover .work-card-full__badge {
+  background: rgba(200, 98, 28, 0.72);
+  border-color: rgba(200, 98, 28, 0.5);
+}
+
+/* Body — pinned to bottom */
+.work-card-full__body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 20px 22px 24px;
+}
+.work-card-full__meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(250, 250, 247, 0.48);
+  margin-bottom: 9px;
+}
+.work-card-full__title {
   font-family: var(--font-sans);
   font-weight: 600;
-  font-size: clamp(20px, 1.6vw, 24px);
-  line-height: 1.22;
+  font-size: clamp(17px, 1.4vw, 21px);
+  line-height: 1.28;
   letter-spacing: -0.015em;
-  color: var(--ink-100);
-  margin-bottom: 16px;
+  color: var(--paper);
+  margin-bottom: 14px;
   max-width: 30ch;
+  transition: color 0.24s var(--ease-soft);
 }
-.work-card:hover .work-card__title {
-  background-image: linear-gradient(var(--ochre), var(--ochre));
-  background-repeat: no-repeat;
-  background-size: 100% 1px;
-  background-position: 0 100%;
-}
-.work-card__read {
+.work-card-full:hover .work-card-full__title { color: var(--ochre-light); }
+
+.work-card-full__cta {
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 10px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ochre);
-  display: flex;
+  color: var(--ochre-light);
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
 }
-.work-card__arrow {
+.work-card-full__arrow {
   display: inline-block;
-  transition: transform 0.24s var(--ease-soft);
+  transition: transform 0.28s var(--ease-soft);
+  font-style: normal;
 }
-.work-card:hover .work-card__arrow { transform: translateX(6px); }
+.work-card-full:hover .work-card-full__arrow { transform: translate(4px, -4px); }
+
+/* ── Desktop grid ───────────────────────────────────────────── */
+.work-grid--desktop {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  gap: 20px;
+  perspective: 1100px;
+}
+@media (max-width: 960px) {
+  .work-grid--desktop { display: none; }
+}
+
+/* ── Mobile carousel ────────────────────────────────────────── */
+.work-carousel { display: none; }
+
+@media (max-width: 960px) {
+  .work-carousel { display: block; margin-top: 32px; }
+
+  .work-carousel__track {
+    display: flex;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 14px;
+    /* Left padding so first card aligns with content; right padding reveals next card */
+    padding: 4px 20px 8px;
+  }
+  .work-carousel__track::-webkit-scrollbar { display: none; }
+
+  .work-carousel__item {
+    flex: 0 0 82vw;
+    scroll-snap-align: start;
+  }
+  /* Mobile cards are taller — portrait-ish ratio */
+  .work-carousel__item .work-card-full {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* Dots */
+  .work-carousel__dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .work-carousel__dot {
+    height: 4px;
+    width: 20px;
+    border-radius: 2px;
+    background: var(--rule-med);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: width 0.35s var(--ease-soft), background 0.35s var(--ease-soft);
+  }
+  .work-carousel__dot.is-active {
+    width: 40px;
+    background: var(--ink-100);
+  }
+}
 
 /* Services grid */
 .services-grid {
