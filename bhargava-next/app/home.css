@@ -252,6 +252,22 @@
 @media (hover: none) {
   .work-card:hover { transform: translateY(-3px); }
 }
+
+/* Real thumbnail image inside media wrapper */
+.work-card__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.55s var(--ease-soft);
+}
+.work-card:hover .work-card__img {
+  transform: scale(1.04);
+}
+
 .work-card__media {
   position: relative;
   border-radius: 12px;

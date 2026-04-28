@@ -128,9 +128,35 @@ function MethodStrip() {
 
 /* ---------- Featured work ---------- */
 const FEATURED_WORK = [
-  { slug: 'jll-retargeting', client: 'JLL India', type: 'ABM strategy', year: '2026', title: "The retargeting blindspot in JLL's enterprise funnel", tag: 'Acquisition', surface: 'linen' },
-  { slug: 'atlas-repositioning', client: 'Atlas Copco', type: 'Positioning', year: '2025', title: 'Repositioning a 150-year-old compressor maker for mid-market India', tag: 'Positioning', surface: 'dim' },
-  { slug: 'cde-tool', client: 'Self-published', type: 'Tool built', year: '2025', title: 'CDE — a diagnostic engine for stuck campaigns', tag: 'Tools', surface: 'ochre' },
+  {
+    slug: 'ux-conversion-engine',
+    client: 'Enterprise Technology Brand',
+    type: 'User Experience Optimization',
+    year: '2026',
+    title: 'Turning User Experience Into a Conversion Engine',
+    tag: 'User Experience',
+    surface: 'linen',
+    image: '/assets/Case%20study/Featured.png',
+  },
+  {
+    slug: 'lead-acquisition-engine',
+    client: 'Enterprise Services Brand',
+    type: 'Performance Marketing',
+    year: '2026',
+    title: 'Building a Scalable Lead Acquisition Engine',
+    tag: 'Acquisition',
+    surface: 'dim',
+    image: '/assets/Case%20study/Acqusition.png',
+  },
+  {
+    slug: 'cde-tool',
+    client: 'Self-published',
+    type: 'Tool built',
+    year: '2025',
+    title: 'CDE — a diagnostic engine for stuck campaigns',
+    tag: 'Tools',
+    surface: 'ochre',
+  },
 ];
 
 function WorkCard({ item, index }) {
@@ -190,9 +216,17 @@ function WorkCard({ item, index }) {
     <div ref={tiltRef} className="work-card-tilt">
       <Link href={`/work/${item.slug}`} className={`work-card work-card--${item.surface} reveal`} data-delay={(index * 100).toString()}>
         <div className="work-card__media">
-          <div className={'ph-image img-reveal' + (item.surface === 'dim' ? ' ph-image--dark' : '')} style={{ aspectRatio: '16 / 11', width: '100%', height: '100%' }}>
-            <div className="ph-image__label">case image · {item.client.toLowerCase().replace(/ /g, '-')}</div>
-          </div>
+          {item.image ? (
+            <img
+              src={item.image}
+              alt={item.title}
+              className="work-card__img"
+            />
+          ) : (
+            <div className={'ph-image img-reveal' + (item.surface === 'dim' ? ' ph-image--dark' : '')} style={{ aspectRatio: '16 / 11', width: '100%', height: '100%' }}>
+              <div className="ph-image__label">case image · {item.client.toLowerCase().replace(/ /g, '-')}</div>
+            </div>
+          )}
           <div className="work-card__media-overlay" />
         </div>
         <div className="work-card__meta">
