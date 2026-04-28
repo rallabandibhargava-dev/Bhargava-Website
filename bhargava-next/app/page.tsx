@@ -137,6 +137,7 @@ const FEATURED_WORK = [
     tag: 'User Experience',
     surface: 'linen',
     image: '/assets/Case%20study/Featured.png',
+    mobileImage: '/assets/Case%20study/Featured%20mobile.png',
   },
   {
     slug: 'lead-acquisition-engine',
@@ -147,6 +148,7 @@ const FEATURED_WORK = [
     tag: 'Acquisition',
     surface: 'dim',
     image: '/assets/Case%20study/Acqusition.png',
+    mobileImage: '/assets/Case%20study/Acqusition%20mobile.png',
   },
   {
     slug: 'cde-tool',
@@ -197,11 +199,17 @@ function WorkCard({ item, index }) {
         className="work-card-full reveal"
         data-delay={(index * 120).toString()}
       >
-        {/* Full-bleed image */}
-        {item.image
-          ? <img src={item.image} alt={item.title} className="work-card-full__img" />
-          : <div className="work-card-full__ph" />
-        }
+        {/* Full-bleed image — mobile gets its own crop via <picture> */}
+        {item.image ? (
+          <picture>
+            {item.mobileImage && (
+              <source media="(max-width: 960px)" srcSet={item.mobileImage} />
+            )}
+            <img src={item.image} alt={item.title} className="work-card-full__img" />
+          </picture>
+        ) : (
+          <div className="work-card-full__ph" />
+        )}
         {/* Gradient overlay */}
         <div className="work-card-full__gradient" />
         {/* CASE STUDY badge */}
