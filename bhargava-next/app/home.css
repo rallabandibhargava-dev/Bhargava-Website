@@ -386,8 +386,9 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     gap: 14px;
-    /* 20px left breathing room matching shell padding; right side lets next card peek */
     padding: 4px 40px 8px 20px;
+    /* Tells scroll-snap to honour the 20px left padding when snapping */
+    scroll-padding-left: 20px;
   }
   .work-carousel__track::-webkit-scrollbar { display: none; }
 
