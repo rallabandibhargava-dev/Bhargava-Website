@@ -486,45 +486,54 @@ function NotesTeaser() {
   );
 }
 
-/* ---------- About teaser — cinematic scroll reveal ---------- */
+/* ---------- About teaser ---------- */
 function AboutTeaser() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const imgWrapRef = useRef<HTMLDivElement>(null);
-  const textRef    = useRef<HTMLDivElement>(null);
+  const sectionRef  = useRef<HTMLElement>(null);
+  const overlayRef  = useRef<HTMLDivElement>(null);
+  const frameRef    = useRef<HTMLDivElement>(null);
+  const textRef     = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
+      // ── Main timeline: image scale + overlay fade ──────────────
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top top',
-          end: '+=180%',        // pin for 1.8× viewport height of scroll
-          scrub: 1.2,           // slight lag for premium feel
-          pin: true,
-          anticipatePin: 1,
+          start: 'top center',
+          end: 'bottom center',
+          scrub: 1,
         },
       });
 
-      // Phase 1 (0–70%): image zooms in + background darkens
-      tl.fromTo(imgWrapRef.current,
-        { scale: 0.88 },
-        { scale: 1.14, ease: 'none', duration: 0.7 },
+      // Image: scale only — layout unchanged
+      tl.fromTo(frameRef.current,
+        { scale: 0.9 },
+        { scale: 1.15, ease: 'none' },
         0
       );
+      // Overlay: opacity only — section bg unchanged
       tl.fromTo(overlayRef.current,
         { opacity: 0 },
-        { opacity: 1, ease: 'none', duration: 0.7 },
+        { opacity: 1, ease: 'none' },
         0
       );
 
-      // Phase 2 (70–100%): text slides up + fades in
-      tl.fromTo(textRef.current,
-        { opacity: 0, y: 44 },
-        { opacity: 1, y: 0, ease: 'power2.out', duration: 0.3 },
-        0.7
+      // ── Text reveal: fires after main animation ─────────────────
+      gsap.fromTo(textRef.current,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: 'bottom 70%',
+            end: 'bottom 30%',
+            scrub: 1,
+          },
+        }
       );
     }, sectionRef);
 
@@ -532,35 +541,45 @@ function AboutTeaser() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="about-cin" data-screen-label="06 About">
-      {/* Ink overlay — animated opacity 0 → 1 */}
-      <div ref={overlayRef} className="about-cin__overlay" />
+    <section ref={sectionRef} className="about-ed" data-screen-label="06 About">
 
-      {/* Portrait — fills viewport, scale animated */}
-      <div ref={imgWrapRef} className="about-cin__img-wrap">
-        <img
-          src="/assets/bhargava-about.jpg"
-          alt="Bhargava, marketing strategist based in Mumbai"
-          className="about-cin__img"
-        />
-      </div>
+      {/* Overlay — black, animates opacity 0 → 1 */}
+      <div ref={overlayRef} className="about-ed__overlay" />
 
-      {/* Text — reveals after main animation */}
-      <div ref={textRef} className="about-cin__text">
-        <div className="shell">
-          <div className="eyebrow eyebrow--ochre eyebrow--no-rule" style={{ marginBottom: 20 }}>
-            06 · About
+      <div className="shell">
+        <div className="about-ed__col">
+
+          {/* Portrait — layout unchanged; frame ref receives scale animation */}
+          <div className="about-ed__portrait-wrap">
+            <div ref={frameRef} className="about-ed__portrait-frame">
+              <img
+                src="/assets/bhargava-about.jpg"
+                alt="Bhargava, marketing strategist based in Mumbai"
+                className="about-ed__img"
+              />
+              <div className="about-ed__fade" />
+            </div>
           </div>
-          <p className="about-cin__lede">
-            I&apos;m a marketing strategist based in Mumbai, working at the intersection of{' '}
-            <span className="ochre-light">marketing, data, and product</span>.
-          </p>
-          <p className="about-cin__body">
-            Most weeks I focus on shaping positioning, auditing funnels, and running diagnostics.
-          </p>
-          <MagneticButton strength={0.22} radius={70}>
-            <Link href="/about" className="about-cin__cta">Read the full story →</Link>
-          </MagneticButton>
+
+          {/* Text — opacity + y animated after main scroll */}
+          <div ref={textRef} className="about-ed__text">
+            <div className="eyebrow eyebrow--ochre eyebrow--no-rule" style={{ marginBottom: 28 }}>
+              06 · About
+            </div>
+            <p className="about-ed__lede">
+              I&apos;m a marketing strategist based in Mumbai, working at the intersection of{' '}
+              <span className="ochre-light">marketing, data, and product</span>.
+            </p>
+            <p className="about-ed__body">
+              Most weeks I focus on shaping positioning, auditing funnels, and running diagnostics.
+            </p>
+            <MagneticButton strength={0.22} radius={70}>
+              <Link href="/about" className="link-draw about-ed__cta" data-delay="240">
+                Read the full story →
+              </Link>
+            </MagneticButton>
+          </div>
+
         </div>
       </div>
     </section>

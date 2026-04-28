@@ -558,99 +558,117 @@
 }
 
 /* About — editorial centered portrait layout */
-/* ── Cinematic about section ─────────────────────────────────── */
-.about-cin {
+/* ── About section ───────────────────────────────────────────── */
+.about-ed {
   position: relative;
-  height: 100vh;
+  padding: var(--s10) 0 calc(var(--s10) + 16px);
+  background: var(--paper);   /* starts white; overlay animates to black */
   overflow: hidden;
-  background: var(--paper);
 }
 
-/* Ink overlay — opacity driven by GSAP (0 → 1) */
-.about-cin__overlay {
+/* Black overlay — GSAP animates opacity 0 → 1 */
+.about-ed__overlay {
   position: absolute;
   inset: 0;
   background: var(--ink);
   opacity: 0;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
 }
 
-/* Image — fills section, scale driven by GSAP */
-.about-cin__img-wrap {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  transform-origin: center center;
-  will-change: transform;
-}
-.about-cin__img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 18%;
-  display: block;
-  filter: contrast(1.03) brightness(0.96);
+/* Everything inside must sit above the overlay */
+.about-ed .shell { position: relative; z-index: 1; }
+
+/* Single centered column — image above, text below */
+.about-ed__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
-/* Text — sits above overlay, pinned to bottom third */
-.about-cin__text {
+/* Portrait wrap */
+.about-ed__portrait-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 56px;
+}
+
+/* Portrait frame — GSAP scales this element */
+.about-ed__portrait-frame {
+  position: relative;
+  width: 400px;
+  max-width: min(400px, 72vw);
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform;
+  box-shadow: 0 32px 96px rgba(0,0,0,0.7), 0 0 0 0.5px rgba(255,255,255,0.04);
+}
+
+.about-ed__img {
+  width: 100%;
+  height: 110%;
+  margin-top: -5%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: contrast(1.04) brightness(0.97);
+}
+
+/* Radial vignette */
+.about-ed__fade {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-  padding-bottom: 72px;
-  /* Bottom-to-top gradient so text is legible over image */
-  background: linear-gradient(
-    to top,
-    rgba(12, 9, 6, 0.82) 0%,
-    rgba(12, 9, 6, 0.5) 50%,
-    transparent 100%
+  inset: 0;
+  background: radial-gradient(
+    ellipse 90% 88% at 50% 42%,
+    transparent 42%,
+    rgba(22,20,16,0.32) 62%,
+    rgba(22,20,16,0.72) 82%,
+    var(--ink) 100%
   );
-  padding-top: 80px;
-  color: var(--paper);
+}
+
+/* Text — GSAP animates opacity + y */
+.about-ed__text {
+  width: 100%;
   opacity: 0;
   will-change: transform, opacity;
 }
-.about-cin__lede {
+
+.about-ed__lede {
   font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(22px, 2.8vw, 38px);
-  line-height: 1.22;
-  letter-spacing: -0.025em;
+  font-weight: 500;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.38;
+  letter-spacing: -0.018em;
   color: var(--paper);
-  max-width: 26ch;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
-.about-cin__lede .ochre-light { color: var(--ochre-light); }
-.about-cin__body {
+.about-ed__body {
   font-family: var(--font-sans);
-  font-size: var(--step-lead);
-  line-height: 1.6;
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--paper-70);
-  max-width: 52ch;
-  margin-bottom: 32px;
+  margin-bottom: 36px;
 }
-.about-cin__cta {
+.about-ed__cta {
   font-family: var(--font-mono);
-  font-size: var(--step-micro);
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ochre-light);
   display: inline-block;
-  background-image: linear-gradient(var(--ochre-light), var(--ochre-light));
-  background-repeat: no-repeat;
-  background-size: 0% 1px;
-  background-position: 0 100%;
-  transition: background-size 0.3s ease-in-out;
-  padding-bottom: 2px;
 }
-.about-cin__cta:hover { background-size: 100% 1px; }
 
 @media (max-width: 700px) {
-  .about-cin__lede { font-size: clamp(20px, 5.5vw, 26px); }
-  .about-cin__text { padding-bottom: 48px; }
+  .about-ed__col { max-width: 100%; }
+  .about-ed__portrait-frame { width: min(320px, 80vw); }
+  .about-ed__portrait-wrap { margin-bottom: 40px; }
+  .about-ed__lede { font-size: clamp(19px, 5vw, 24px); }
+  .about-ed { padding: var(--s8) 0; }
 }
 
 /* ── Brands logo marquee band ── */
