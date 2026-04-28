@@ -81,6 +81,23 @@ export default function PositioningQuoteReveal() {
       tl.to(word, { color: targetColor, ease: 'none', duration: 0.4 }, i * 0.4);
     });
 
+    // Draw each strike line in sync with its words revealing.
+    // backgroundSize goes 0% → 100% across exactly the same timeline
+    // window as the words inside that span — no new ScrollTrigger needed.
+    gsap.utils.toArray<HTMLElement>('.pq-strike', section).forEach(strikeEl => {
+      const strikeWords = Array.from(strikeEl.querySelectorAll<HTMLElement>('.pq-word'));
+      if (!strikeWords.length) return;
+      const firstIdx = words.indexOf(strikeWords[0]);
+      const lastIdx  = words.indexOf(strikeWords[strikeWords.length - 1]);
+      if (firstIdx === -1) return;
+      tl.fromTo(
+        strikeEl,
+        { backgroundSize: '0% 1.5px' },
+        { backgroundSize: '100% 1.5px', ease: 'none', duration: (lastIdx - firstIdx + 1) * 0.4 },
+        firstIdx * 0.4,   // starts exactly when the first word in this span lights up
+      );
+    });
+
     return () => {
       tl.kill();
       ScrollTrigger.getAll().forEach(t => {

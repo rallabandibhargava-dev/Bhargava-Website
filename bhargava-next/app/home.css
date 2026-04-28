@@ -793,9 +793,12 @@
   /* inherit text-decoration, font-weight, border-bottom from parent spans */
 }
 .pq-strike {
-  text-decoration: line-through;
-  text-decoration-color: rgba(26, 26, 26, 0.5);
-  text-decoration-thickness: 1px;
+  /* Strike line is drawn via background-image so GSAP can animate it */
+  text-decoration: none;
+  background-image: linear-gradient(#C8621C, #C8621C);
+  background-position: 0 52%;
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px; /* GSAP animates this to 100% 1.5px */
   color: rgba(26, 26, 26, 0.42);
 }
 .pq-accent {
