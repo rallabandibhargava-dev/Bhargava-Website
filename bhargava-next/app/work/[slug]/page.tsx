@@ -9,8 +9,9 @@ export async function generateStaticParams() {
   return getAllWorkSlugs().map(slug => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const work = await getWorkBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const work = await getWorkBySlug(slug);
   if (!work) return {};
   return {
     title: `${work.client} — ${work.type}`,
@@ -18,8 +19,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function CasePage({ params }: { params: { slug: string } }) {
-  const work = await getWorkBySlug(params.slug);
+export default async function CasePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const work = await getWorkBySlug(slug);
   if (!work) notFound();
 
   return (
