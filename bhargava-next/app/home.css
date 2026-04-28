@@ -558,100 +558,99 @@
 }
 
 /* About — editorial centered portrait layout */
-.about-ed {
-  padding: var(--s10) 0 calc(var(--s10) + 16px);
-}
-
-/* Single centered column — image above, text below */
-.about-ed__col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 680px;
-  margin: 0 auto;
-}
-
-/* ── Portrait: contained, centered, 4:5 ratio ── */
-.about-ed__portrait-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 56px;
-}
-
-.about-ed__portrait-frame {
+/* ── Cinematic about section ─────────────────────────────────── */
+.about-cin {
   position: relative;
-  width: 400px;
-  max-width: min(400px, 72vw);
-  aspect-ratio: 4 / 5;
+  height: 100vh;
   overflow: hidden;
-  /* Subtle depth shadow so portrait feels lifted off the dark bg */
-  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.7), 0 0 0 0.5px rgba(255,255,255,0.04);
+  background: var(--paper);
 }
 
-.about-ed__img {
-  width: 100%;
-  /* Slightly taller than frame so parallax shift (≈32px) never exposes a gap */
-  height: 110%;
-  margin-top: -5%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  /* Photo is already B&W — just a touch of contrast to pop against dark bg */
-  filter: contrast(1.04) brightness(0.97);
-}
-
-/* Radial vignette — edges dissolve into the ink background */
-.about-ed__fade {
+/* Ink overlay — opacity driven by GSAP (0 → 1) */
+.about-cin__overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    ellipse 90% 88% at 50% 42%,
-    transparent 42%,
-    rgba(22, 20, 16, 0.32) 62%,
-    rgba(22, 20, 16, 0.72) 82%,
-    var(--ink) 100%
-  );
+  background: var(--ink);
+  opacity: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
-/* ── Text: narrow, left-aligned within the centered column ── */
-.about-ed__text {
+/* Image — fills section, scale driven by GSAP */
+.about-cin__img-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform-origin: center center;
+  will-change: transform;
+}
+.about-cin__img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;
+  display: block;
+  filter: contrast(1.03) brightness(0.96);
 }
 
-.about-ed__lede {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(20px, 2.2vw, 26px);
-  line-height: 1.38;
-  letter-spacing: -0.018em;
+/* Text — sits above overlay, pinned to bottom third */
+.about-cin__text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding-bottom: 72px;
+  /* Bottom-to-top gradient so text is legible over image */
+  background: linear-gradient(
+    to top,
+    rgba(12, 9, 6, 0.82) 0%,
+    rgba(12, 9, 6, 0.5) 50%,
+    transparent 100%
+  );
+  padding-top: 80px;
   color: var(--paper);
-  margin-bottom: 24px;
+  opacity: 0;
+  will-change: transform, opacity;
 }
-
-.about-ed__body {
+.about-cin__lede {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(22px, 2.8vw, 38px);
+  line-height: 1.22;
+  letter-spacing: -0.025em;
+  color: var(--paper);
+  max-width: 26ch;
+  margin-bottom: 16px;
+}
+.about-cin__lede .ochre-light { color: var(--ochre-light); }
+.about-cin__body {
   font-family: var(--font-sans);
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: var(--step-lead);
+  line-height: 1.6;
   color: var(--paper-70);
-  margin-bottom: 36px;
+  max-width: 52ch;
+  margin-bottom: 32px;
 }
-
-.about-ed__cta {
+.about-cin__cta {
   font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
+  font-size: var(--step-micro);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ochre-light);
   display: inline-block;
+  background-image: linear-gradient(var(--ochre-light), var(--ochre-light));
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  transition: background-size 0.3s ease-in-out;
+  padding-bottom: 2px;
 }
+.about-cin__cta:hover { background-size: 100% 1px; }
 
 @media (max-width: 700px) {
-  .about-ed__col { max-width: 100%; }
-  .about-ed__portrait-frame { width: min(320px, 80vw); }
-  .about-ed__portrait-wrap { margin-bottom: 40px; }
-  .about-ed__lede { font-size: clamp(19px, 5vw, 24px); }
-  .about-ed { padding: var(--s8) 0; }
+  .about-cin__lede { font-size: clamp(20px, 5.5vw, 26px); }
+  .about-cin__text { padding-bottom: 48px; }
 }
 
 /* ── Brands logo marquee band ── */

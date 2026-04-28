@@ -176,6 +176,7 @@ img { max-width: 100%; display: block; }
   color: var(--ink-100);
 }
 .shout-title span.ochre { color: var(--ochre); }
+.ochre-light { color: var(--ochre-light); }
 .on-dark .shout-title { color: var(--paper); }
 .on-dark .shout-title span.ochre { color: var(--ochre-light); }
 

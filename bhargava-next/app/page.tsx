@@ -486,55 +486,81 @@ function NotesTeaser() {
   );
 }
 
-/* ---------- About teaser ---------- */
+/* ---------- About teaser — cinematic scroll reveal ---------- */
 function AboutTeaser() {
-  const imgRef = useRef<HTMLImageElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const imgWrapRef = useRef<HTMLDivElement>(null);
+  const textRef    = useRef<HTMLDivElement>(null);
 
-  // Portrait scroll parallax — photo drifts up 30 px as section scrolls through viewport
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-    const img = imgRef.current;
-    if (!img) return;
-    const tween = gsap.fromTo(
-      img,
-      { y: 0 },
-      {
-        y: -32,
-        ease: 'none',
+
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: img.closest('.about-ed'),
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 0.8,
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: '+=180%',        // pin for 1.8× viewport height of scroll
+          scrub: 1.2,           // slight lag for premium feel
+          pin: true,
+          anticipatePin: 1,
         },
-      }
-    );
-    return () => { tween.scrollTrigger?.kill(); gsap.set(img, { y: 0 }); };
+      });
+
+      // Phase 1 (0–70%): image zooms in + background darkens
+      tl.fromTo(imgWrapRef.current,
+        { scale: 0.88 },
+        { scale: 1.14, ease: 'none', duration: 0.7 },
+        0
+      );
+      tl.fromTo(overlayRef.current,
+        { opacity: 0 },
+        { opacity: 1, ease: 'none', duration: 0.7 },
+        0
+      );
+
+      // Phase 2 (70–100%): text slides up + fades in
+      tl.fromTo(textRef.current,
+        { opacity: 0, y: 44 },
+        { opacity: 1, y: 0, ease: 'power2.out', duration: 0.3 },
+        0.7
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section className="about-ed surface-ink on-dark" data-screen-label="06 About">
-      <div className="shell">
-        <div className="about-ed__col">
-          <div className="about-ed__portrait-wrap reveal">
-            <div className="about-ed__portrait-frame">
-              <img
-                ref={imgRef}
-                src="/assets/bhargava-about.jpg"
-                alt="Bhargava, marketing strategist based in Mumbai"
-                className="about-ed__img"
-              />
-              <div className="about-ed__fade" />
-            </div>
+    <section ref={sectionRef} className="about-cin" data-screen-label="06 About">
+      {/* Ink overlay — animated opacity 0 → 1 */}
+      <div ref={overlayRef} className="about-cin__overlay" />
+
+      {/* Portrait — fills viewport, scale animated */}
+      <div ref={imgWrapRef} className="about-cin__img-wrap">
+        <img
+          src="/assets/bhargava-about.jpg"
+          alt="Bhargava, marketing strategist based in Mumbai"
+          className="about-cin__img"
+        />
+      </div>
+
+      {/* Text — reveals after main animation */}
+      <div ref={textRef} className="about-cin__text">
+        <div className="shell">
+          <div className="eyebrow eyebrow--ochre eyebrow--no-rule" style={{ marginBottom: 20 }}>
+            06 · About
           </div>
-          <div className="about-ed__text">
-            <div className="eyebrow eyebrow--ochre eyebrow--no-rule" style={{ marginBottom: 28 }}>06 · About</div>
-            <p className="about-ed__lede reveal">I&apos;m a marketing strategist based in Mumbai, working at the intersection of <span className="ochre">marketing, data, and product</span>.</p>
-            <p className="about-ed__body reveal" data-delay="120">Most weeks I focus on shaping positioning, auditing funnels, and running diagnostics.</p>
-            <MagneticButton strength={0.22} radius={70}>
-              <Link href="/about" className="link-draw about-ed__cta reveal" data-delay="240">Read the full story →</Link>
-            </MagneticButton>
-          </div>
+          <p className="about-cin__lede">
+            I&apos;m a marketing strategist based in Mumbai, working at the intersection of{' '}
+            <span className="ochre-light">marketing, data, and product</span>.
+          </p>
+          <p className="about-cin__body">
+            Most weeks I focus on shaping positioning, auditing funnels, and running diagnostics.
+          </p>
+          <MagneticButton strength={0.22} radius={70}>
+            <Link href="/about" className="about-cin__cta">Read the full story →</Link>
+          </MagneticButton>
         </div>
       </div>
     </section>
