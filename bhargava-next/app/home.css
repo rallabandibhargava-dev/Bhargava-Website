@@ -393,7 +393,7 @@
   .work-carousel__track::-webkit-scrollbar { display: none; }
 
   .work-carousel__item {
-    flex: 0 0 82vw;
+    flex: 0 0 76vw;
     scroll-snap-align: start;
   }
   /* Mobile cards are taller — portrait-ish ratio */
