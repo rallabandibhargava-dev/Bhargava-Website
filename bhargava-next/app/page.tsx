@@ -497,30 +497,28 @@ function AboutTeaser() {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
-      // ── Main timeline: image scale + overlay fade ──────────────
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top center',
-          end: 'bottom center',
-          scrub: 1,
-        },
-      });
+      // Shared config: image frame as trigger, completes exactly when
+      // the image center hits the viewport center
+      const mainConfig = {
+        trigger: frameRef.current,
+        start: 'top 85%',      // image starts entering viewport
+        end: 'center center',  // fully done when image is centred on screen
+        scrub: 1,
+      };
 
-      // Image: scale only — layout unchanged
-      tl.fromTo(frameRef.current,
+      // Image scale — transform only, no layout change
+      gsap.fromTo(frameRef.current,
         { scale: 0.9 },
-        { scale: 1.15, ease: 'none' },
-        0
-      );
-      // Overlay: opacity only — section bg unchanged
-      tl.fromTo(overlayRef.current,
-        { opacity: 0 },
-        { opacity: 1, ease: 'none' },
-        0
+        { scale: 1.15, ease: 'none', scrollTrigger: mainConfig }
       );
 
-      // ── Text reveal: fires after main animation ─────────────────
+      // Overlay — opacity only, bg goes black as image reaches centre
+      gsap.fromTo(overlayRef.current,
+        { opacity: 0 },
+        { opacity: 1, ease: 'none', scrollTrigger: mainConfig }
+      );
+
+      // Text — reveals as it scrolls into view (after image is centred)
       gsap.fromTo(textRef.current,
         { opacity: 0, y: 30 },
         {
@@ -528,9 +526,9 @@ function AboutTeaser() {
           y: 0,
           ease: 'power2.out',
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: 'bottom 70%',
-            end: 'bottom 30%',
+            trigger: textRef.current,
+            start: 'top 90%',   // text just entering viewport
+            end: 'top 45%',     // fully revealed by the time it's near centre
             scrub: 1,
           },
         }
