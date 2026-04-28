@@ -17,7 +17,7 @@
 }
 .hero-c1__bg-inner {
   position: absolute;
-  inset: -4%;
+  inset: -8%; /* extra room for GSAP parallax shift (≈55 px) */
   animation: kenburns 28s ease-in-out infinite alternate;
   will-change: transform;
 }
@@ -229,17 +229,29 @@
   display: grid;
   grid-template-columns: 1.25fr 1fr 1fr;
   gap: 32px;
+  perspective: 1100px;  /* enables 3-D tilt on child cards */
 }
 @media (max-width: 960px) {
-  .work-grid { grid-template-columns: 1fr; gap: 48px; }
+  .work-grid { grid-template-columns: 1fr; gap: 48px; perspective: none; }
 }
+
+/* Tilt wrapper — takes the grid slot, passes clicks through to the card */
+.work-card-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
 .work-card {
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s var(--ease-soft);
+  /* hover lift handled by GSAP tilt on desktop; keep subtle lift on touch */
+  transition: box-shadow 0.3s var(--ease-soft);
   cursor: pointer;
 }
-.work-card:hover { transform: translateY(-4px); }
+/* Remove the static translateY hover so it doesn't fight GSAP tilt */
+@media (hover: none) {
+  .work-card:hover { transform: translateY(-3px); }
+}
 .work-card__media {
   position: relative;
   border-radius: 12px;
@@ -469,7 +481,9 @@
 
 .about-ed__img {
   width: 100%;
-  height: 100%;
+  /* Slightly taller than frame so parallax shift (≈32px) never exposes a gap */
+  height: 110%;
+  margin-top: -5%;
   object-fit: cover;
   object-position: center top;
   display: block;

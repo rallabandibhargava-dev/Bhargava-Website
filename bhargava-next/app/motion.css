@@ -1,0 +1,85 @@
+/* ═══════════════════════════════════════════════════════════════
+   MOTION.CSS  —  Scroll animation layer
+   Four systems:
+     1. Upgraded .reveal   (scale + translate)
+     2. .sr-line-wrap/-line  (headline line-clip slide-up)
+     3. .sr-rule             (eyebrow rule draw-in)
+     4. --scroll-skew        (velocity skew on .shell)
+═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Upgraded .reveal ─────────────────────────────────────
+   Overrides tokens.css. Adds a subtle scale so elements feel
+   like they're stepping forward, not just sliding up.
+─────────────────────────────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px) scale(0.975);
+  transition: opacity 0.65s var(--ease-soft), transform 0.65s var(--ease-soft);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── 2. Headline line-clip reveals ───────────────────────────
+   Injected by ScrollAnimations.tsx around each <br>-separated
+   line. Text slides up out of a clipping mask — "stamp" feel.
+─────────────────────────────────────────────────────────────── */
+.sr-line-wrap {
+  display: block;
+  overflow: hidden;
+  /* Tiny bottom padding so descenders don't get clipped */
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+
+.sr-line {
+  display: block;
+  transform: translateY(112%);
+  transition: transform 0.82s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.sr-line.is-in {
+  transform: translateY(0);
+}
+
+/* Hero h1 — always visible at the element level;
+   the inner .sr-line clips handle the entrance */
+.hero-c1__shout {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ── 3. Eyebrow rule draw-in ─────────────────────────────────
+   Added by ScrollAnimations.tsx to .pq-rule, .tss__eyebrow-rule.
+   Grows from 0 → full width, left-to-right.
+─────────────────────────────────────────────────────────────── */
+.sr-rule {
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sr-rule.is-in {
+  transform: scaleX(1);
+}
+
+/* ── 4. Scroll-velocity skew ─────────────────────────────────
+   --scroll-skew is set by SmoothScroll.tsx (lerped in JS).
+   Applied to .shell so section backgrounds / images stay flat;
+   only text content receives the momentum tilt.
+   Excluded from the pinned PositioningQuote section.
+─────────────────────────────────────────────────────────────── */
+.shell {
+  transform: skewY(var(--scroll-skew, 0deg));
+  /* No CSS transition here — lerp is handled in JS each RAF */
+  will-change: transform;
+}
+
+/* The pinned quote section must NOT skew — ScrollTrigger pin
+   breaks if an ancestor or descendant has a conflicting transform
+   context during the pin. */
+.positioning-quote .shell {
+  transform: none;
+}
+

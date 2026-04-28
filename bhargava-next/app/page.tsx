@@ -2,19 +2,65 @@
 // @ts-nocheck
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SiteNav from '../components/SiteNav';
 import LivingFooter from '../components/LivingFooter';
 import useRevealObserver from '../components/useRevealObserver';
 import PositioningQuoteReveal from '../components/PositioningQuoteReveal';
+import MagneticButton from '../components/MagneticButton';
+import ScrollAnimations from '../components/ScrollAnimations';
 
 /* ---------- Hero ---------- */
 function Hero() {
   const [mounted, setMounted] = useState(false);
+  const bgInnerRef = useRef<HTMLDivElement>(null);
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+
   useEffect(() => { requestAnimationFrame(() => setMounted(true)); }, []);
+
+  // Line-clip entrance for the hero h1 — fires once on mount
+  useEffect(() => {
+    if (!mounted || !headlineRef.current) return;
+    const h1 = headlineRef.current;
+    if (h1.querySelector('.sr-line-wrap')) return; // guard against double-run
+    const parts = h1.innerHTML.split(/<br\s*\/?>/gi);
+    h1.innerHTML = parts
+      .map(
+        (part, i) =>
+          `<span class="sr-line-wrap">` +
+          `<span class="sr-line" style="transition-delay:${180 + i * 115}ms">` +
+          `${part}</span></span>`
+      )
+      .join('');
+    // Trigger on next frame so the starting transform is painted first
+    requestAnimationFrame(() => {
+      h1.querySelectorAll('.sr-line').forEach(l => l.classList.add('is-in'));
+    });
+  }, [mounted]);
+
+  // Portrait parallax — bg-inner drifts up as hero scrolls out of view
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const el = bgInnerRef.current;
+    if (!el) return;
+    const tween = gsap.to(el, {
+      y: -55,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el.closest('.hero-c1'),
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 0.6,
+      },
+    });
+    return () => { tween.scrollTrigger?.kill(); gsap.set(el, { y: 0 }); };
+  }, []);
+
   return (
     <section className="hero-c1 on-dark" data-screen-label="01 Hero">
       <div className="hero-c1__bg">
-        <div className="hero-c1__bg-inner">
+        <div className="hero-c1__bg-inner" ref={bgInnerRef}>
           <img src="/assets/bhargava-portrait.png" alt="Bhargava, independent marketing strategist" className="hero-c1__portrait" />
         </div>
         <div className="hero-c1__overlay" />
@@ -23,15 +69,19 @@ function Hero() {
         <div className={'hero-c1__eyebrow fade-up' + (mounted ? ' is-in' : '')}>
           <span className="pulse-dot" />MARKETING STRATEGIST · MUMBAI
         </div>
-        <h1 className={'hero-c1__shout' + (mounted ? ' is-in' : '')}>
+        <h1 ref={headlineRef} className="hero-c1__shout">
           I FIGURE OUT<br/>WHY <span className="hero-c1__shout-accent">GROWTH</span><br/>STALLED.
         </h1>
         <p className={'hero-c1__sub fade-up' + (mounted ? ' is-in' : '')} style={{ transitionDelay: '400ms' }}>
           Then I fix it. Sometimes that&apos;s a diagnostic. Sometimes it&apos;s running your paid, SEO, UX, or retention directly. Mumbai-based strategist, working with growth-stage companies.
         </p>
         <div className={'hero-c1__ctas fade-up' + (mounted ? ' is-in' : '')} style={{ transitionDelay: '550ms' }}>
-          <Link href="/work" className="btn btn--ochre">See the work →</Link>
-          <Link href="/contact" className="btn">Book a call</Link>
+          <MagneticButton>
+            <Link href="/work" className="btn btn--ochre">See the work →</Link>
+          </MagneticButton>
+          <MagneticButton>
+            <Link href="/contact" className="btn">Book a call</Link>
+          </MagneticButton>
         </div>
       </div>
       <div className="hero-c1__scroll" aria-hidden="true">
@@ -84,24 +134,78 @@ const FEATURED_WORK = [
 ];
 
 function WorkCard({ item, index }) {
+  const tiltRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = tiltRef.current;
+    if (!el) return;
+
+    // Skip tilt on touch devices
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    // Tween a plain proxy object — avoids GSAP 3.12+ warnings about rotateX/Y
+    // not being eligible as individual CSS transform properties.
+    const proxy = { rx: 0, ry: 0 };
+    const applyTransform = () => {
+      el.style.transform = `rotateX(${proxy.rx}deg) rotateY(${proxy.ry}deg)`;
+    };
+
+    const onMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top)  / rect.height - 0.5;
+      gsap.to(proxy, {
+        ry: nx * 14,
+        rx: -ny * 9,
+        duration: 0.45,
+        ease: 'power2.out',
+        overwrite: 'auto',
+        onUpdate: applyTransform,
+      });
+    };
+
+    const onLeave = () => {
+      gsap.to(proxy, {
+        rx: 0,
+        ry: 0,
+        duration: 0.6,
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onUpdate: applyTransform,
+        onComplete: () => { el.style.transform = ''; },
+      });
+    };
+
+    el.addEventListener('mousemove', onMove);
+    el.addEventListener('mouseleave', onLeave);
+    return () => {
+      el.removeEventListener('mousemove', onMove);
+      el.removeEventListener('mouseleave', onLeave);
+      gsap.killTweensOf(proxy);
+      el.style.transform = '';
+    };
+  }, []);
+
   return (
-    <Link href={`/work/${item.slug}`} className={`work-card work-card--${item.surface} reveal`} data-delay={(index * 100).toString()}>
-      <div className="work-card__media">
-        <div className={'ph-image img-reveal' + (item.surface === 'dim' ? ' ph-image--dark' : '')} style={{ aspectRatio: '16 / 11', width: '100%', height: '100%' }}>
-          <div className="ph-image__label">case image · {item.client.toLowerCase().replace(/ /g, '-')}</div>
+    <div ref={tiltRef} className="work-card-tilt">
+      <Link href={`/work/${item.slug}`} className={`work-card work-card--${item.surface} reveal`} data-delay={(index * 100).toString()}>
+        <div className="work-card__media">
+          <div className={'ph-image img-reveal' + (item.surface === 'dim' ? ' ph-image--dark' : '')} style={{ aspectRatio: '16 / 11', width: '100%', height: '100%' }}>
+            <div className="ph-image__label">case image · {item.client.toLowerCase().replace(/ /g, '-')}</div>
+          </div>
+          <div className="work-card__media-overlay" />
         </div>
-        <div className="work-card__media-overlay" />
-      </div>
-      <div className="work-card__meta">
-        <div className="work-card__line">
-          <span>{item.client}</span><span className="work-card__dot">·</span>
-          <span>{item.type}</span><span className="work-card__dot">·</span>
-          <span>{item.year}</span>
+        <div className="work-card__meta">
+          <div className="work-card__line">
+            <span>{item.client}</span><span className="work-card__dot">·</span>
+            <span>{item.type}</span><span className="work-card__dot">·</span>
+            <span>{item.year}</span>
+          </div>
         </div>
-      </div>
-      <h3 className="work-card__title">{item.title}</h3>
-      <div className="work-card__read">Read case <span className="work-card__arrow">→</span></div>
-    </Link>
+        <h3 className="work-card__title">{item.title}</h3>
+        <div className="work-card__read">Read case <span className="work-card__arrow">→</span></div>
+      </Link>
+    </div>
   );
 }
 
@@ -324,13 +428,42 @@ function NotesTeaser() {
 
 /* ---------- About teaser ---------- */
 function AboutTeaser() {
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Portrait scroll parallax — photo drifts up 30 px as section scrolls through viewport
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const img = imgRef.current;
+    if (!img) return;
+    const tween = gsap.fromTo(
+      img,
+      { y: 0 },
+      {
+        y: -32,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: img.closest('.about-ed'),
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.8,
+        },
+      }
+    );
+    return () => { tween.scrollTrigger?.kill(); gsap.set(img, { y: 0 }); };
+  }, []);
+
   return (
     <section className="about-ed surface-ink on-dark" data-screen-label="06 About">
       <div className="shell">
         <div className="about-ed__col">
           <div className="about-ed__portrait-wrap reveal">
             <div className="about-ed__portrait-frame">
-              <img src="/assets/bhargava-about.jpg" alt="Bhargava, marketing strategist based in Mumbai" className="about-ed__img" />
+              <img
+                ref={imgRef}
+                src="/assets/bhargava-about.jpg"
+                alt="Bhargava, marketing strategist based in Mumbai"
+                className="about-ed__img"
+              />
               <div className="about-ed__fade" />
             </div>
           </div>
@@ -338,7 +471,9 @@ function AboutTeaser() {
             <div className="eyebrow eyebrow--ochre eyebrow--no-rule" style={{ marginBottom: 28 }}>06 · About</div>
             <p className="about-ed__lede reveal">I&apos;m a marketing strategist based in Mumbai, working at the intersection of <span className="ochre">marketing, data, and product</span>.</p>
             <p className="about-ed__body reveal" data-delay="120">Most weeks I focus on shaping positioning, auditing funnels, and running diagnostics.</p>
-            <Link href="/about" className="link-draw about-ed__cta reveal" data-delay="240">Read the full story →</Link>
+            <MagneticButton strength={0.22} radius={70}>
+              <Link href="/about" className="link-draw about-ed__cta reveal" data-delay="240">Read the full story →</Link>
+            </MagneticButton>
           </div>
         </div>
       </div>
@@ -376,7 +511,7 @@ function BrandsMarquee() {
   }, []);
   return (
     <div className="brands-band">
-      <div className="shell"><p className="brands-band__label eyebrow">Brands I worked with</p></div>
+      <div className="shell"><p className="brands-band__label eyebrow reveal">Brands I worked with</p></div>
       <div className="brands-band__viewport">
         <div className="brands-band__track" ref={trackRef}>
           {[0, 1].map(copy => (
@@ -418,7 +553,7 @@ function ToolsMarquee() {
   }, []);
   return (
     <div className="tools-band">
-      <div className="shell"><p className="tools-band__label eyebrow">Tools I work in</p></div>
+      <div className="shell"><p className="tools-band__label eyebrow reveal">Tools I work in</p></div>
       <div className="tools-band__viewport">
         <div className="tools-band__track" ref={trackRef}>
           {[0, 1].map(copy => (
@@ -447,10 +582,14 @@ function ContactCTA() {
             <span className="pulse-dot" /> 1 of 2 retainer slots open for Q3 2026
           </div>
           <h2 className="shout-title">TELL ME WHAT&apos;S<br/>SLOWING YOUR<br/><span className="ochre-light">GROWTH</span> DOWN.</h2>
-          <p className="cta-block__lede">One call. One verdict. One plan. You&apos;ll know what&apos;s broken by the end of month one.</p>
-          <div className="cta-block__actions">
-            <Link href="/contact" className="btn btn--ochre">Start the conversation →</Link>
-            <Link href="/work" className="btn">See the work →</Link>
+          <p className="cta-block__lede reveal" data-delay="120">One call. One verdict. One plan. You&apos;ll know what&apos;s broken by the end of month one.</p>
+          <div className="cta-block__actions reveal" data-delay="240">
+            <MagneticButton>
+              <Link href="/contact" className="btn btn--ochre">Start the conversation →</Link>
+            </MagneticButton>
+            <MagneticButton>
+              <Link href="/work" className="btn">See the work →</Link>
+            </MagneticButton>
           </div>
         </div>
       </div>
@@ -490,6 +629,7 @@ export default function HomePage() {
 
   return (
     <>
+      <ScrollAnimations />
       <SiteNav current="home" dark />
       <main>
         <Hero />

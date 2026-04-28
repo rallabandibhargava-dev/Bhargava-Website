@@ -353,6 +353,3 @@ a:focus-visible, button:focus-visible {
   .section-pad-sm { padding: var(--s7) 0; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal, .img-reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
-}
