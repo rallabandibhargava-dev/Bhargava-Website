@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import SiteNav from '../../../components/SiteNav';
 import LivingFooter from '../../../components/LivingFooter';
 import RevealInit from '../../../components/RevealInit';
+import CaseShortStory from '../../../components/CaseShortStory';
 import { getWorkBySlug, getAllWorkSlugs } from '../../../lib/work';
 
 export async function generateStaticParams() {
@@ -59,6 +60,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         {hasContent ? (
           <section className="case-body section-pad">
             <div className="shell shell--narrow">
+              {work.shortStory ? <CaseShortStory summary={work.shortStory} /> : null}
               <div
                 className="case-md reveal"
                 dangerouslySetInnerHTML={{ __html: work.content }}

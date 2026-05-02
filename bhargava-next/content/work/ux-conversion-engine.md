@@ -8,6 +8,11 @@ category: User Experience
 surface: linen
 ratio: "16 / 11"
 standfirst: Turning a high-traffic website into a conversion engine through hyper-personalized user experiences.
+thumbnail: "/assets/Case study/Featured.png"
+shortStory:
+  whatHappened: Strong traffic was landing on a generic site experience that failed to convert different users with different intent.
+  howWeSolved: We introduced hyper-personalized pathways, reworked site flow, and aligned content and CTAs to user context.
+  outcome: Engagement deepened, bounce dropped, and conversion actions across forms, downloads, and chat rose significantly.
 ---
 
 ## The problem

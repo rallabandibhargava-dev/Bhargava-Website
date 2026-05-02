@@ -143,15 +143,23 @@
 
 .tldr {
   background: var(--linen);
-  border-left: 3px solid var(--ochre);
-  padding: 40px 48px;
-  border-radius: 0 12px 12px 0;
+  border: 0.5px solid var(--rule-light);
+  border-top: 3px solid var(--ochre);
+  padding: 32px 36px;
+  border-radius: 20px;
+  margin-bottom: 56px;
 }
 .tldr__label { margin-bottom: 28px; }
 .tldr__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  gap: 18px;
+}
+.tldr__item {
+  padding: 22px 20px;
+  background: rgba(250, 250, 247, 0.78);
+  border: 0.5px solid rgba(26, 26, 26, 0.08);
+  border-radius: 16px;
 }
 .tldr__heading {
   font-family: var(--font-mono);
@@ -165,11 +173,17 @@
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.55;
-  color: var(--ink-100);
+  color: var(--ink-70);
+  margin: 0;
 }
 @media (max-width: 800px) {
-  .tldr { padding: 28px 24px; }
+  .tldr {
+    padding: 24px 20px;
+    border-radius: 18px;
+    margin-bottom: 40px;
+  }
   .tldr__grid { grid-template-columns: 1fr; gap: 24px; }
+  .tldr__item { padding: 18px 16px; }
 }
 
 .case-h2 {

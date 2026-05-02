@@ -19,11 +19,10 @@ function Hero() {
 
   useEffect(() => { requestAnimationFrame(() => setMounted(true)); }, []);
 
-  // Line-clip entrance for the hero h1 — fires once on mount
   useEffect(() => {
     if (!mounted || !headlineRef.current) return;
     const h1 = headlineRef.current;
-    if (h1.querySelector('.sr-line-wrap')) return; // guard against double-run
+    if (h1.querySelector('.sr-line-wrap')) return;
     const parts = h1.innerHTML.split(/<br\s*\/?>/gi);
     h1.innerHTML = parts
       .map(
@@ -33,13 +32,11 @@ function Hero() {
           `${part}</span></span>`
       )
       .join('');
-    // Trigger on next frame so the starting transform is painted first
     requestAnimationFrame(() => {
-      h1.querySelectorAll('.sr-line').forEach(l => l.classList.add('is-in'));
+      h1.querySelectorAll('.sr-line').forEach((l) => l.classList.add('is-in'));
     });
   }, [mounted]);
 
-  // Portrait parallax — bg-inner drifts up as hero scrolls out of view
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const el = bgInnerRef.current;
@@ -70,7 +67,7 @@ function Hero() {
           <span className="pulse-dot" />MARKETING STRATEGIST · MUMBAI
         </div>
         <h1 ref={headlineRef} className="hero-c1__shout">
-          I FIGURE OUT<br/>WHY <span className="hero-c1__shout-accent">GROWTH</span><br/>STALLED.
+          I FIGURE OUT<br />WHY <span className="hero-c1__shout-accent">GROWTH</span><br />STALLED.
         </h1>
         <p className={'hero-c1__sub fade-up' + (mounted ? ' is-in' : '')} style={{ transitionDelay: '400ms' }}>
           Then I fix it. Sometimes that&apos;s a diagnostic. Sometimes it&apos;s running your paid, SEO, UX, or retention directly. Mumbai-based strategist, working with growth-stage companies.
@@ -91,7 +88,6 @@ function Hero() {
   );
 }
 
-/* ---------- Method strip ---------- */
 function MethodStrip() {
   const steps = [
     { num: '01', title: 'DIAGNOSE', body: "Every engagement starts with a written diagnosis of what's actually slowing the system. Usually the first useful document the team has seen in months." },
@@ -104,7 +100,7 @@ function MethodStrip() {
         <header className="method-strip__head">
           <div className="eyebrow">02 · The method</div>
           <h2 className="shout-title method-strip__title reveal">
-            I DON&apos;T<br/>SHIP <span className="ochre">GUESSES.</span><br/>I SHIP FIXES.
+            I DON&apos;T<br />SHIP <span className="ochre">GUESSES.</span><br />I SHIP FIXES.
           </h2>
           <p className="method-strip__intro reveal" data-delay="120">
             The work begins with a diagnosis. Not a plan. Not a pitch. A written verdict on what&apos;s actually broken.
@@ -125,8 +121,6 @@ function MethodStrip() {
   );
 }
 
-
-/* ---------- Featured work ---------- */
 const FEATURED_WORK = [
   {
     slug: 'ux-conversion-engine',
@@ -151,13 +145,15 @@ const FEATURED_WORK = [
     mobileImage: '/assets/Case%20study/Acqusition%20mobile.png',
   },
   {
-    slug: 'cde-tool',
-    client: 'Self-published',
-    type: 'Tool built',
-    year: '2025',
-    title: 'CDE — a diagnostic engine for stuck campaigns',
-    tag: 'Tools',
+    slug: 'seo-content-growth-engine',
+    client: "India's leading wound care brand",
+    type: 'SEO & Content Strategy',
+    year: '2024',
+    title: 'Building a Scalable SEO & Content Growth Engine',
+    tag: 'Acquisition',
     surface: 'ochre',
+    image: '/assets/Case%20study/SEO%20desktop.png',
+    mobileImage: '/assets/Case%20study/SEO.png',
   },
 ];
 
@@ -176,7 +172,7 @@ function WorkCard({ item, index }) {
     const onMove = (e: MouseEvent) => {
       const rect = el.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
-      const ny = (e.clientY - rect.top)  / rect.height - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
       gsap.to(proxy, { ry: nx * 14, rx: -ny * 9, duration: 0.45, ease: 'power2.out', overwrite: 'auto', onUpdate: applyTransform });
     };
     const onLeave = () => {
@@ -194,27 +190,17 @@ function WorkCard({ item, index }) {
 
   return (
     <div ref={tiltRef} className="work-card-tilt">
-      <Link
-        href={`/work/${item.slug}`}
-        className="work-card-full reveal"
-        data-delay={(index * 120).toString()}
-      >
-        {/* Full-bleed image — mobile gets its own crop via <picture> */}
+      <Link href={`/work/${item.slug}`} className="work-card-full reveal" data-delay={(index * 120).toString()}>
         {item.image ? (
           <picture>
-            {item.mobileImage && (
-              <source media="(max-width: 960px)" srcSet={item.mobileImage} />
-            )}
+            {item.mobileImage && <source media="(max-width: 960px)" srcSet={item.mobileImage} />}
             <img src={item.image} alt={item.title} className="work-card-full__img" />
           </picture>
         ) : (
           <div className="work-card-full__ph" />
         )}
-        {/* Gradient overlay */}
         <div className="work-card-full__gradient" />
-        {/* CASE STUDY badge */}
         <span className="work-card-full__badge">Case Study</span>
-        {/* Bottom body */}
         <div className="work-card-full__body">
           <p className="work-card-full__meta">{item.client} · {item.year}</p>
           <h3 className="work-card-full__title">{item.title}</h3>
@@ -253,18 +239,15 @@ function FeaturedWork() {
         <header className="section-head">
           <div className="section-head__left">
             <div className="eyebrow">03 · Selected work</div>
-            <h2 className="shout-title">THREE PROBLEMS.<br/>THREE <span className="ochre">REFRAMES</span>.</h2>
+            <h2 className="shout-title">THREE PROBLEMS.<br />THREE <span className="ochre">REFRAMES</span>.</h2>
           </div>
           <Link href="/work" className="section-head__right link-draw">EXPLORE MORE →</Link>
         </header>
-
-        {/* Desktop: 3-column grid */}
         <div className="work-grid--desktop">
           {FEATURED_WORK.map((w, i) => <WorkCard key={w.slug} item={w} index={i} />)}
         </div>
       </div>
 
-      {/* Mobile: swipeable carousel */}
       <div className="work-carousel">
         <div className="work-carousel__track" ref={trackRef} onScroll={handleScroll}>
           {FEATURED_WORK.map((w, i) => (
@@ -288,7 +271,6 @@ function FeaturedWork() {
   );
 }
 
-/* ---------- Three-stage services ---------- */
 const STAGES = [
   {
     num: '01', name: 'Acquisition', shortName: 'ACQUISITION',
@@ -299,12 +281,13 @@ const STAGES = [
     ],
   },
   {
-    num: '02', name: 'UX', shortName: 'UX',
+    num: '02', name: 'User Experience', shortName: 'UX',
     description: 'What happens after the click. The site, the path through it, the thing that decides whether traffic turns into revenue.',
     services: [
       { name: 'Website Development', desc: 'Build, rebuild, or fix.' },
       { name: 'UI / UX', desc: 'Flow, interface, hierarchy.' },
       { name: 'CRO', desc: 'Test, iterate, improve.' },
+      { name: 'Personalisation', desc: 'Segment-driven journeys and tailored experiences.' },
     ],
   },
   {
@@ -347,20 +330,17 @@ function ThreeStageServices({ sectionRef, inView }) {
 
   return (
     <section className="tss" ref={sectionRef} data-screen-label="04 Three-stage services">
-      {/* Desktop */}
       <div className="tss__desktop section-pad">
         <div className="shell">
           <header className="tss__head">
             <div className="tss__eyebrow reveal"><span className="tss__eyebrow-rule" aria-hidden="true" />— WHAT I DO</div>
-            <h2 className="tss__title reveal" data-delay="100">THREE STAGES.<br/>ONE <span className="ochre">FUNNEL</span>.</h2>
+            <h2 className="tss__title reveal" data-delay="100">THREE STAGES.<br />ONE <span className="ochre">FUNNEL</span>.</h2>
             <p className="tss__intro reveal" data-delay="180">Growth breaks somewhere between acquisition, user experience, and retention. I work across all three — or the one that&apos;s actually slowing you down.</p>
           </header>
           <div className="tss__tabs-wrap reveal" data-delay="260">
             <div className="tss__tabs" role="tablist">
               {STAGES.map((s, i) => (
-                <button key={s.num} role="tab" aria-selected={i === activeIdx}
-                  className={'tss__tab' + (i === activeIdx ? ' is-active' : '')}
-                  onClick={() => handleDesktopTabClick(i)}>
+                <button key={s.num} role="tab" aria-selected={i === activeIdx} className={'tss__tab' + (i === activeIdx ? ' is-active' : '')} onClick={() => handleDesktopTabClick(i)}>
                   <span className="tss__tab-num">{s.num}</span>
                   <span className="tss__tab-name">{s.name}</span>
                 </button>
@@ -399,11 +379,10 @@ function ThreeStageServices({ sectionRef, inView }) {
         </div>
       </div>
 
-      {/* Mobile */}
       <div className="tss__mobile">
         <div className="shell tss__mobile-header">
           <div className="tss__eyebrow"><span className="tss__eyebrow-rule" />— WHAT I DO</div>
-          <h2 className="tss__title" style={{ marginTop: 16 }}>THREE STAGES.<br/>ONE <span className="ochre">FUNNEL</span>.</h2>
+          <h2 className="tss__title" style={{ marginTop: 16 }}>THREE STAGES.<br />ONE <span className="ochre">FUNNEL</span>.</h2>
           <p className="tss__intro" style={{ marginTop: 16 }}>Growth breaks somewhere between acquisition, user experience, and retention.</p>
         </div>
         <div className="tss__track" ref={trackRef} onScroll={handleMobileScroll}>
@@ -433,8 +412,7 @@ function ThreeStageServices({ sectionRef, inView }) {
         </div>
         <div className="tss__mobile-dots" aria-hidden="true">
           {STAGES.map((_, i) => (
-            <button key={i} className={'tss__mobile-dot' + (i === activeIdx ? ' is-active' : '')}
-              onClick={() => goToSlide(i)} aria-label={`Go to ${STAGES[i].shortName}`} />
+            <button key={i} className={'tss__mobile-dot' + (i === activeIdx ? ' is-active' : '')} onClick={() => goToSlide(i)} aria-label={`Go to ${STAGES[i].shortName}`} />
           ))}
         </div>
       </div>
@@ -451,12 +429,12 @@ function ThreeStageServices({ sectionRef, inView }) {
   );
 }
 
-/* ---------- Notes teaser ---------- */
 const NOTES_PREVIEW = [
   { date: '04.22.2026', read: '8 min', title: 'The retargeting blindspot nobody measures', tag: 'Attribution' },
   { date: '03.31.2026', read: '11 min', title: 'Why most B2B positioning decks describe the wrong enemy', tag: 'Positioning' },
   { date: '03.14.2026', read: '6 min', title: 'A spreadsheet is a strategy document when you let it be', tag: 'Systems' },
 ];
+
 function NotesTeaser() {
   return (
     <section className="section-pad surface-linen" data-screen-label="05 Notes">
@@ -464,7 +442,7 @@ function NotesTeaser() {
         <header className="section-head">
           <div className="section-head__left">
             <div className="eyebrow">05 · BLOGS</div>
-            <h2 className="shout-title">WHAT I&apos;M<br/><span className="ochre">THINKING</span> ABOUT.</h2>
+            <h2 className="shout-title">WHAT I&apos;M<br /><span className="ochre">THINKING</span> ABOUT.</h2>
           </div>
           <Link href="/notes" className="section-head__right link-draw">EXPLORE MORE →</Link>
         </header>
@@ -486,53 +464,35 @@ function NotesTeaser() {
   );
 }
 
-/* ---------- About teaser ---------- */
 function AboutTeaser() {
-  const sectionRef  = useRef<HTMLElement>(null);
-  const overlayRef  = useRef<HTMLDivElement>(null);
-  const frameRef    = useRef<HTMLDivElement>(null);
-  const textRef     = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
     const ctx = gsap.context(() => {
-      // Shared config: image frame as trigger, completes exactly when
-      // the image center hits the viewport center
       const mainConfig = {
         trigger: frameRef.current,
-        start: 'top 85%',      // image starts entering viewport
-        end: 'center center',  // fully done when image is centred on screen
+        start: 'top 85%',
+        end: 'center center',
         scrub: 1,
       };
 
-      // Image scale — transform only, no layout change
-      gsap.fromTo(frameRef.current,
-        { scale: 0.9 },
-        { scale: 1.15, ease: 'none', scrollTrigger: mainConfig }
-      );
-
-      // Overlay — opacity only, bg goes black as image reaches centre
-      gsap.fromTo(overlayRef.current,
-        { opacity: 0 },
-        { opacity: 1, ease: 'none', scrollTrigger: mainConfig }
-      );
-
-      // Text — reveals as it scrolls into view (after image is centred)
-      gsap.fromTo(textRef.current,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: textRef.current,
-            start: 'top 90%',   // text just entering viewport
-            end: 'top 45%',     // fully revealed by the time it's near centre
-            scrub: 1,
-          },
-        }
-      );
+      gsap.fromTo(frameRef.current, { scale: 0.9 }, { scale: 1.15, ease: 'none', scrollTrigger: mainConfig });
+      gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, ease: 'none', scrollTrigger: mainConfig });
+      gsap.fromTo(textRef.current, { opacity: 0, y: 30 }, {
+        opacity: 1,
+        y: 0,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: textRef.current,
+          start: 'top 90%',
+          end: 'top 45%',
+          scrub: 1,
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -540,36 +500,25 @@ function AboutTeaser() {
 
   return (
     <section ref={sectionRef} className="about-ed" data-screen-label="06 About">
-
-      {/* Overlay — black, animates opacity 0 → 1 */}
       <div ref={overlayRef} className="about-ed__overlay" />
-
       <div className="shell">
         <div className="about-ed__col">
-
-          {/* Portrait — layout unchanged; frame ref receives scale animation */}
           <div className="about-ed__portrait-wrap">
             <div ref={frameRef} className="about-ed__portrait-frame">
-              <img
-                src="/assets/bhargava-about.jpg"
-                alt="Bhargava, marketing strategist based in Mumbai"
-                className="about-ed__img"
-              />
+              <img src="/assets/bhargava-about.jpg" alt="Bhargava, marketing strategist based in Mumbai" className="about-ed__img" />
               <div className="about-ed__fade" />
             </div>
           </div>
-
-          {/* Text — opacity + y animated after main scroll */}
           <div ref={textRef} className="about-ed__text">
             <div className="eyebrow eyebrow--ochre eyebrow--no-rule" style={{ marginBottom: 28 }}>
               06 · About
             </div>
             <p className="about-ed__lede">
               I&apos;m a marketing strategist based in Mumbai, working at the intersection of{' '}
-              <span className="ochre-light">marketing, data, and product</span>.
+              <span className="ochre-light">marketing, data, and product</span>. I focus on connecting these domains to create strategies that are not just creative, but measurable and outcome-driven.
             </p>
             <p className="about-ed__body">
-              Most weeks I focus on shaping positioning, auditing funnels, and running diagnostics.
+              Most weeks I focus on shaping positioning, auditing funnels, and running diagnostics. I work with brands to move beyond surface-level metrics, identifying what actually drives growth across acquisition, engagement, and conversion. My approach blends structured thinking with data-led insights to bring clarity to complex problems and turn them into scalable, actionable systems.
             </p>
             <MagneticButton strength={0.22} radius={70}>
               <Link href="/about" className="link-draw about-ed__cta" data-delay="240">
@@ -577,14 +526,12 @@ function AboutTeaser() {
               </Link>
             </MagneticButton>
           </div>
-
         </div>
       </div>
     </section>
   );
 }
 
-/* ---------- Brands marquee ---------- */
 const BRAND_LOGOS = [
   { name: 'Audi', file: 'Audi-Logo_2016.svg' },
   { name: 'Hansaplast', file: 'Hansaplast.svg' },
@@ -603,27 +550,40 @@ function BrandsMarquee() {
     const DURATION = 30000; let start = null; let rafId = null; let paused = false;
     const step = (ts) => {
       if (!start) start = ts;
-      if (!paused) { const gW = group.offsetWidth; if (gW > 0) { track.style.transform = `translateX(${-((ts - start) % DURATION) / DURATION * gW}px)`; } }
+      if (!paused) {
+        const gW = group.offsetWidth;
+        if (gW > 0) track.style.transform = `translateX(${-((ts - start) % DURATION) / DURATION * gW}px)`;
+      }
       rafId = requestAnimationFrame(step);
     };
     rafId = requestAnimationFrame(step);
-    const pause = () => { paused = true; }; const resume = () => { paused = false; };
+    const pause = () => { paused = true; };
+    const resume = () => { paused = false; };
     track.parentElement.addEventListener('mouseenter', pause);
     track.parentElement.addEventListener('mouseleave', resume);
-    return () => { cancelAnimationFrame(rafId); if (track.parentElement) { track.parentElement.removeEventListener('mouseenter', pause); track.parentElement.removeEventListener('mouseleave', resume); } };
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (track.parentElement) {
+        track.parentElement.removeEventListener('mouseenter', pause);
+        track.parentElement.removeEventListener('mouseleave', resume);
+      }
+    };
   }, []);
   return (
     <div className="brands-band">
       <div className="shell"><p className="brands-band__label eyebrow reveal">Brands I worked with</p></div>
       <div className="brands-band__viewport">
         <div className="brands-band__track" ref={trackRef}>
-          {[0, 1].map(copy => (
+          {[0, 1].map((copy) => (
             <div className="brands-band__group" ref={copy === 0 ? groupRef : null} aria-hidden={copy === 1 ? 'true' : 'false'} key={copy}>
               {BRAND_LOGOS.map((b, i) => (
                 <div className="brands-band__item" key={i}>
-                  <img src={`/assets/Brands/${b.file}`} alt={copy === 0 ? b.name : ''}
+                  <img
+                    src={`/assets/Brands/${b.file}`}
+                    alt={copy === 0 ? b.name : ''}
                     className={'brands-band__logo' + (b.wide ? ' brands-band__logo--wide' : '') + (b.invert ? ' brands-band__logo--invert' : '')}
-                    onError={e => { (e.target as HTMLElement).parentElement.style.display = 'none'; }} />
+                    onError={(e) => { e.target.parentElement.style.display = 'none'; }}
+                  />
                 </div>
               ))}
             </div>
@@ -634,32 +594,42 @@ function BrandsMarquee() {
   );
 }
 
-/* ---------- Tools marquee ---------- */
-const TOOL_ITEMS = ['HubSpot','Google Analytics','Mixpanel','WebEngage','Adobe Analytics','VWO','6Sense','Factors.ai','Meta Business Manager','Google Ads','Zoho CRM','Shopify'];
+const TOOL_ITEMS = ['HubSpot', 'Google Analytics', 'Mixpanel', 'WebEngage', 'Adobe Analytics', 'VWO', '6Sense', 'Factors.ai', 'Meta Business Manager', 'Google Ads', 'Zoho CRM', 'Shopify'];
 
 function ToolsMarquee() {
-  const trackRef = useRef(null); const groupRef = useRef(null);
+  const trackRef = useRef(null);
+  const groupRef = useRef(null);
   useEffect(() => {
     const track = trackRef.current; const group = groupRef.current;
     if (!track || !group) return;
     const DURATION = 28000; let start = null; let rafId = null; let paused = false;
     const step = (ts) => {
       if (!start) start = ts;
-      if (!paused) { const gW = group.offsetWidth; if (gW > 0) { track.style.transform = `translateX(${-((ts - start) % DURATION) / DURATION * gW}px)`; } }
+      if (!paused) {
+        const gW = group.offsetWidth;
+        if (gW > 0) track.style.transform = `translateX(${-((ts - start) % DURATION) / DURATION * gW}px)`;
+      }
       rafId = requestAnimationFrame(step);
     };
     rafId = requestAnimationFrame(step);
-    const pause = () => { paused = true; }; const resume = () => { paused = false; };
+    const pause = () => { paused = true; };
+    const resume = () => { paused = false; };
     track.parentElement.addEventListener('mouseenter', pause);
     track.parentElement.addEventListener('mouseleave', resume);
-    return () => { cancelAnimationFrame(rafId); if (track.parentElement) { track.parentElement.removeEventListener('mouseenter', pause); track.parentElement.removeEventListener('mouseleave', resume); } };
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (track.parentElement) {
+        track.parentElement.removeEventListener('mouseenter', pause);
+        track.parentElement.removeEventListener('mouseleave', resume);
+      }
+    };
   }, []);
   return (
     <div className="tools-band">
       <div className="shell"><p className="tools-band__label eyebrow reveal">Tools I work in</p></div>
       <div className="tools-band__viewport">
         <div className="tools-band__track" ref={trackRef}>
-          {[0, 1].map(copy => (
+          {[0, 1].map((copy) => (
             <div className="tools-band__group" ref={copy === 0 ? groupRef : null} aria-hidden={copy === 1 ? 'true' : 'false'} key={copy}>
               {TOOL_ITEMS.map((name, i) => (
                 <div className="tools-band__item" key={i}>
@@ -675,7 +645,6 @@ function ToolsMarquee() {
   );
 }
 
-/* ---------- Contact CTA ---------- */
 function ContactCTA() {
   return (
     <section className="surface-dim on-dark section-pad" data-screen-label="07 Contact CTA">
@@ -684,7 +653,7 @@ function ContactCTA() {
           <div className="eyebrow eyebrow--ochre" style={{ marginBottom: 28 }}>
             <span className="pulse-dot" /> 1 of 2 retainer slots open for Q3 2026
           </div>
-          <h2 className="shout-title">TELL ME WHAT&apos;S<br/>SLOWING YOUR<br/><span className="ochre-light">GROWTH</span> DOWN.</h2>
+          <h2 className="shout-title">TELL ME WHAT&apos;S<br />SLOWING YOUR<br /><span className="ochre-light">GROWTH</span> DOWN.</h2>
           <p className="cta-block__lede reveal" data-delay="120">One call. One verdict. One plan. You&apos;ll know what&apos;s broken by the end of month one.</p>
           <div className="cta-block__actions reveal" data-delay="240">
             <MagneticButton>
@@ -700,7 +669,6 @@ function ContactCTA() {
   );
 }
 
-/* ---------- Sticky mobile CTA ---------- */
 function StickyMobileCTA({ visible, instant }) {
   return (
     <div className={'sticky-mobile-cta' + (visible ? ' is-visible' : '') + (instant ? ' no-transition' : '')}>
@@ -711,7 +679,6 @@ function StickyMobileCTA({ visible, instant }) {
   );
 }
 
-/* ---------- App ---------- */
 export default function HomePage() {
   useRevealObserver();
   const [pastMethod, setPastMethod] = useState(false);
@@ -721,7 +688,7 @@ export default function HomePage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (methodSentinelRef.current) setPastMethod((methodSentinelRef.current as HTMLElement).getBoundingClientRect().top < 0);
+      if (methodSentinelRef.current) setPastMethod(methodSentinelRef.current.getBoundingClientRect().top < 0);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();

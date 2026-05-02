@@ -8,6 +8,11 @@ category: Acquisition
 surface: linen
 ratio: "16 / 11"
 standfirst: Scaling high-intent lead generation through a structured full-funnel acquisition strategy while significantly improving efficiency.
+thumbnail: "/assets/Case study/Acqusition.png"
+shortStory:
+  whatHappened: Fragmented campaigns, weak conversion pathways, and rising lead costs were limiting scale across key markets.
+  howWeSolved: We rebuilt acquisition into a full-funnel system across targeting, messaging, landing pages, and remarketing loops.
+  outcome: Lead volume grew sharply while conversion rates improved and cost per lead dropped across major platforms.
 ---
 
 ## The problem
