@@ -3,6 +3,7 @@
 import { Metadata } from 'next';
 import SiteNav from '../../components/SiteNav';
 import LivingFooter from '../../components/LivingFooter';
+import MobileScrollCue from '../../components/MobileScrollCue';
 import useRevealObserver from '../../components/useRevealObserver';
 
 export default function AboutPage() {
@@ -26,6 +27,7 @@ export default function AboutPage() {
               The two halves feed each other. A strategy you can&apos;t instrument is a
               belief, not a plan. A tool without a thesis is a script.
             </p>
+            <MobileScrollCue />
           </div>
         </section>
 

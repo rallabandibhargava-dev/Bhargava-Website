@@ -1,5 +1,6 @@
 import SiteNav from '../../components/SiteNav';
 import LivingFooter from '../../components/LivingFooter';
+import MobileScrollCue from '../../components/MobileScrollCue';
 import WorkGrid from '../../components/WorkGrid';
 import { getAllWork } from '../../lib/work';
 
@@ -26,6 +27,7 @@ export default function WorkPage() {
               brief and turned out to be something else. Filter by the shape of the problem, or
               scroll through all of them.
             </p>
+            <MobileScrollCue />
             <WorkGrid items={work} />
           </div>
         </section>

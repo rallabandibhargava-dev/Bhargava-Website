@@ -248,7 +248,7 @@ function FeaturedWork() {
   }, []);
 
   return (
-    <section className="section-pad" data-screen-label="03 Featured work">
+    <section className="section-pad surface-linen" data-screen-label="03 Featured work">
       <div className="shell">
         <header className="section-head">
           <div className="section-head__left">
@@ -346,7 +346,7 @@ function ThreeStageServices({ sectionRef, inView }) {
   const count = stage.services.length;
 
   return (
-    <section className="surface-linen tss" ref={sectionRef} data-screen-label="04 Three-stage services">
+    <section className="tss" ref={sectionRef} data-screen-label="04 Three-stage services">
       {/* Desktop */}
       <div className="tss__desktop section-pad">
         <div className="shell">
@@ -459,7 +459,7 @@ const NOTES_PREVIEW = [
 ];
 function NotesTeaser() {
   return (
-    <section className="section-pad" data-screen-label="05 Notes">
+    <section className="section-pad surface-linen" data-screen-label="05 Notes">
       <div className="shell">
         <header className="section-head">
           <div className="section-head__left">
@@ -736,7 +736,6 @@ export default function HomePage() {
       <SiteNav current="home" dark />
       <main>
         <Hero />
-        <MethodStrip />
         <div ref={methodSentinelRef} aria-hidden="true" style={{ height: 0, overflow: 'hidden' }} />
         <PositioningQuoteReveal />
         <FeaturedWork />

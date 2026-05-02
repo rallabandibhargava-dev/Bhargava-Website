@@ -7,6 +7,52 @@
   overflow: hidden;
   color: var(--paper);
 }
+.services-opener-paths {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 36px;
+  max-width: 920px;
+}
+.services-opener-path {
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(250, 250, 247, 0.98) 0%, rgba(245, 243, 237, 0.92) 100%);
+  border: 0.5px solid rgba(26, 26, 26, 0.08);
+}
+.services-opener-path--link {
+  display: block;
+  transition: transform 0.22s var(--ease-soft), border-color 0.22s var(--ease-soft), box-shadow 0.22s var(--ease-soft);
+}
+.services-opener-path--link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(207, 111, 28, 0.24);
+  box-shadow: 0 16px 30px rgba(26, 26, 26, 0.06);
+}
+.services-opener-path__kicker {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ochre);
+  margin-bottom: 12px;
+}
+.services-opener-path__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(24px, 2.5vw, 30px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--ink-100);
+  margin-bottom: 10px;
+}
+.services-opener-path__body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-60);
+  max-width: 34ch;
+}
 .services-hero__bg {
   position: absolute; inset: -8% 0; z-index: 0;
   will-change: transform;
@@ -112,6 +158,9 @@
   color: var(--ochre-light);
   margin-bottom: 8px;
 }
+.dx-deliv__label::before {
+  content: "→ ";
+}
 .dx-deliv__body {
   font-family: var(--font-sans);
   font-size: 15px;
@@ -155,46 +204,104 @@
 }
 
 /* =========== CS02 — Stage stack =========== */
+/* Move the section's own padding-bottom into the stack so every bit of
+   vertical space counts as sticky range for Card 3 (Retention).
+   section-pad-sm normally adds 96px below — we zero that out and give
+   Card 3 ~200px of sticky range instead of just 80px.
+   Total white-space after Card 3: 200px (vs 176px before) — imperceptible. */
+#service-direct-hire {
+  padding-bottom: 0;
+}
 .stage-stack {
   display: flex;
   flex-direction: column;
   gap: 0;
-  border-top: 0.5px solid var(--rule-light);
+  border-top: none;
+  padding-bottom: 200px;
 }
 .stage-card {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 64px;
-  padding: 56px 0;
-  border-bottom: 0.5px solid var(--rule-light);
-  align-items: start;
+  position: sticky;
+  top: var(--stage-top, 80px); /* set per-card via inline style */
+  display: block;
+  padding: 36px 36px 40px;
+  border: 0.5px solid var(--rule-light);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(250, 250, 247, 1) 0%, rgba(245, 243, 237, 0.9) 100%);
+  overflow: hidden;
+  transition: transform 0.24s var(--ease-soft), border-color 0.24s var(--ease-soft), box-shadow 0.24s var(--ease-soft);
+  /* subtle shadow so stacked cards have depth */
+  box-shadow: 0 -2px 0 0 rgba(26,26,26,0.06), 0 8px 24px rgba(26,26,26,0.05);
+  margin-bottom: 12px;
+}
+.stage-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--ochre) 0%, rgba(207, 111, 28, 0.18) 100%);
+}
+.stage-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(207, 111, 28, 0.22);
+  box-shadow: 0 18px 34px rgba(26, 26, 26, 0.06);
+}
+.stage-card__toggle {
+  display: block;
+  width: 100%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+.stage-card__content {
+  margin-top: 24px;
 }
 @media (max-width: 900px) {
-  .stage-card { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+  .stage-stack {
+    gap: 0;
+    /* padding-bottom inherited from base rule (200px) — don't override */
+  }
+  .stage-card {
+    top: var(--stage-top-sm, 84px);
+    padding: 20px 18px 24px;
+    border-radius: 18px;
+  }
+  /* Content always visible — same as desktop, no accordion */
+  .stage-card__content {
+    margin-top: 16px;
+  }
 }
 .stage-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(207, 111, 28, 0.08);
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ochre);
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 .stage-card__title {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(36px, 4vw, 56px);
   letter-spacing: -0.03em;
-  line-height: 1;
+  line-height: 0.96;
   color: var(--ink-100);
 }
 .stage-card__framing {
   font-family: var(--font-sans);
-  font-size: 19px;
-  line-height: 1.5;
+  font-size: 18px;
+  line-height: 1.48;
   color: var(--ink-70);
-  max-width: 56ch;
-  margin-bottom: 28px;
+  max-width: 52ch;
+  margin-bottom: 24px;
 }
 .stage-card__subs {
   list-style: none;
@@ -204,8 +311,10 @@
 }
 @media (max-width: 700px) { .stage-card__subs { grid-template-columns: 1fr; } }
 .stage-card__subs li {
-  padding: 10px 0;
-  border-top: 0.5px solid var(--rule-light);
+  padding: 12px 14px;
+  border: 0.5px solid rgba(26, 26, 26, 0.08);
+  border-radius: 14px;
+  background: rgba(250, 250, 247, 0.8);
   display: flex;
   gap: 10px;
   align-items: baseline;
@@ -220,6 +329,16 @@
 }
 .stage-card__sub-dash { color: var(--ink-30); }
 .stage-card__sub-desc { color: var(--ink-50); }
+.stage-card__cta-wrap {
+  margin-top: 18px;
+}
+.stage-card__cta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ochre);
+}
 
 /* =========== CS05 — Fit qualifier =========== */
 .surface-paper { background: var(--paper); }
@@ -310,4 +429,91 @@
   letter-spacing: 0.08em;
   color: var(--paper-50);
   text-transform: uppercase;
+}
+@media (max-width: 700px) {
+  .services-opener .page-opener__title {
+    font-size: clamp(48px, 17vw, 68px);
+    max-width: 10ch;
+  }
+  .services-opener .page-opener__lead {
+    max-width: 19ch;
+  }
+  .services-opener-paths {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  .services-opener-path {
+    padding: 16px 18px;
+    border-radius: 14px;
+  }
+  .services-opener-path__title {
+    font-size: 22px;
+  }
+  .services-opener-path__body {
+    font-size: 14px;
+    max-width: none;
+  }
+  .dx-card {
+    padding: 28px 20px 24px;
+    gap: 28px;
+    border-radius: 20px;
+  }
+  .dx-card__pill {
+    margin-bottom: 18px;
+  }
+  .dx-card__shout {
+    font-size: clamp(42px, 12vw, 56px);
+    line-height: 0.9;
+    margin-bottom: 18px;
+  }
+  .dx-card__sub {
+    font-size: 16px;
+    max-width: none;
+  }
+  .dx-card__body {
+    padding-top: 0;
+  }
+  .dx-card__eyebrow {
+    margin-bottom: 18px;
+  }
+  .dx-deliverables {
+    gap: 18px;
+  }
+  .dx-deliv__label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+  .dx-deliv__body {
+    font-size: 14px;
+    max-width: none;
+  }
+  .dx-card__foot {
+    margin-top: 18px;
+    padding-top: 20px;
+    gap: 14px;
+  }
+  .dx-card__foot .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .dx-card__meta {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .stage-card__title {
+    font-size: clamp(28px, 9vw, 40px);
+    max-width: 9ch;
+  }
+  .stage-card__framing {
+    font-size: 16px;
+    margin-bottom: 18px;
+  }
+  .stage-card__subs {
+    gap: 10px;
+  }
+  .stage-card__subs li {
+    padding: 10px 12px;
+    gap: 8px;
+  }
 }

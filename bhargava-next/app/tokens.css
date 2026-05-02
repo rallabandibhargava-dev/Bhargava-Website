@@ -66,7 +66,7 @@ body {
   line-height: 1.65;
   color: var(--ink-100);
   background: var(--paper);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 ::selection { background: var(--ochre); color: var(--paper); }
 a { color: inherit; text-decoration: none; }

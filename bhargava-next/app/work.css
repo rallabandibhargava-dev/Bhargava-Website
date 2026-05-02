@@ -86,6 +86,8 @@
   .work-grid-full { grid-template-columns: 1fr; gap: 48px; }
   .work-hero { padding: 110px 0 48px; }
   .work-hero__title { font-size: 56px; }
+  .work-hero__lead { margin-bottom: 32px; }
+  .work-controls { padding-top: 24px; }
 }
 
 .wgc { display: flex; flex-direction: column; cursor: pointer; transition: transform 0.3s var(--ease-soft); }

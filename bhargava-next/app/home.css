@@ -895,6 +895,7 @@
 
 /* ===================== CP02 Positioning quote ===================== */
 .positioning-quote {
+  background: var(--paper);
   padding-top: 96px;
   padding-bottom: 96px;
 }
@@ -921,12 +922,13 @@
 .pq-rule--short { width: 20px; }
 .pq-body {
   font-family: var(--font-sans);
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 1.45;
+  font-weight: 500;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.42;
   letter-spacing: -0.015em;
   color: var(--ink-100);
   margin-bottom: 36px;
+  max-width: 38ch;
 }
 /* Word spans injected by PositioningQuoteReveal — must not override parent styles */
 .pq-word {
@@ -962,10 +964,13 @@
   gap: 12px;
 }
 @media (max-width: 700px) {
-  .pq-body { font-size: 20px; }
+  .pq-body { font-size: clamp(22px, 2.4vw, 30px); }
 }
 
 /* ========= Three-Stage Services (CS-HP) ========= */
+.tss {
+  background: var(--paper);
+}
 .tss__head {
   max-width: 780px;
   margin-bottom: 56px;

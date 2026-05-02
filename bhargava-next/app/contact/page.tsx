@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import SiteNav from '../../components/SiteNav';
 import LivingFooter from '../../components/LivingFooter';
+import MobileScrollCue from '../../components/MobileScrollCue';
 import useRevealObserver from '../../components/useRevealObserver';
 
 function FormField({ label, required, help, children }) {
@@ -46,6 +47,7 @@ export default function ContactPage() {
               The more specific you are, the faster I can tell you whether I&apos;m the
               right person. If I&apos;m not, I&apos;ll introduce you to someone who is.
             </p>
+            <MobileScrollCue />
           </div>
         </section>
 

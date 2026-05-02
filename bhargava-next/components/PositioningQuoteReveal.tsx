@@ -110,7 +110,7 @@ export default function PositioningQuoteReveal() {
   return (
     <section
       ref={sectionRef}
-      className="surface-linen section-pad-sm positioning-quote"
+      className="section-pad-sm positioning-quote"
       data-screen-label="03 Positioning quote"
     >
       <div className="shell">

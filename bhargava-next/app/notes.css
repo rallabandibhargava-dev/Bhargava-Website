@@ -7,6 +7,21 @@
 }
 .notes-hero__lead { max-width: 60ch; font-size: 19px; }
 
+@media (max-width: 700px) {
+  .notes-hero {
+    padding: 112px 0 40px;
+  }
+  .notes-hero__title {
+    margin: 18px 0 24px;
+  }
+  .notes-hero__lead {
+    max-width: 22ch;
+  }
+  .notes-hero .mobile-scroll-cue {
+    margin-top: 18px;
+  }
+}
+
 .notes-featured {
   position: relative;
   background: var(--linen);

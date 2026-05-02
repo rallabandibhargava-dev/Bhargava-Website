@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import SiteNav from '../../components/SiteNav';
 import LivingFooter from '../../components/LivingFooter';
+import MobileScrollCue from '../../components/MobileScrollCue';
 import RevealInit from '../../components/RevealInit';
 import SubscribeForm from '../../components/SubscribeForm';
 import { getAllNotes } from '../../lib/notes';
@@ -32,6 +33,7 @@ export default function NotesPage() {
               Short essays about strategy, measurement, and the gap between the deck
               and what actually happens. Mostly for me; occasionally for you.
             </p>
+            <MobileScrollCue />
           </div>
         </section>
 
