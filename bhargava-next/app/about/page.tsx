@@ -11,7 +11,7 @@ export default function AboutPage() {
     <>
       <SiteNav current="about" />
       <main>
-        <section className="page-opener">
+        <section className="page-opener about-opener">
           <div className="shell">
             <div className="eyebrow eyebrow--ochre" style={{ marginBottom: 24 }}>
               About · seven years in · still curious

@@ -425,3 +425,19 @@
   .page-opener { padding: 120px 0 56px; }
   .mobile-scroll-cue { display: inline-flex; }
 }
+
+@media (max-width: 480px) {
+  .about-opener .page-opener__title {
+    font-size: clamp(44px, 13vw, 60px);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    margin-bottom: 24px;
+    max-width: 12ch;
+  }
+
+  .about-opener .page-opener__lead {
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 32ch;
+  }
+}
