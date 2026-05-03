@@ -77,8 +77,8 @@ export default function LivingFooter() {
                 <h2 className="shout-title" style={{ fontSize: 'clamp(40px, 6vw, 84px)' }}>
                   LET&apos;S TALK ABOUT<br />THE <span className="ochre">PROBLEM</span>,<br />NOT THE BRIEF.
                 </h2>
-                <a href="mailto:hi@bhargava.work" className="footer__email link-draw">
-                  hi@bhargava.work →
+                <a href="mailto:hi@growthbybhargava.com" className="footer__email link-draw">
+                  hi@growthbybhargava.com →
                 </a>
               </div>
               <div className="footer__cols">
