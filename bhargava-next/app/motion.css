@@ -83,3 +83,9 @@
   transform: none;
 }
 
+@media (max-width: 700px) {
+  .shell {
+    transform: none;
+    will-change: auto;
+  }
+}

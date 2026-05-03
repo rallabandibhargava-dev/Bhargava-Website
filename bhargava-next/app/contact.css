@@ -219,3 +219,43 @@
   color: var(--ink-100);
   letter-spacing: -0.005em;
 }
+
+@media (max-width: 700px) {
+  .contact-hero {
+    padding: 120px 0 40px;
+  }
+
+  .contact-hero .eyebrow {
+    white-space: normal;
+    row-gap: 8px;
+  }
+
+  .contact-hero__title {
+    font-size: clamp(46px, 14vw, 64px);
+    line-height: 0.92;
+    max-width: 10ch;
+    margin: 20px 0 24px;
+  }
+
+  .contact-hero__lead {
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 32ch;
+  }
+
+  .contact-card,
+  .contact-success,
+  .contact-meta-card {
+    padding: 22px;
+  }
+
+  .contact-card__email {
+    font-size: 20px;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-steps li {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
