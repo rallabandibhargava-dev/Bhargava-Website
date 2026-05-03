@@ -21,6 +21,13 @@ export default function SmoothScroll() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
+    const prefersNativeTouchScroll = window.matchMedia('(pointer: coarse), (max-width: 800px)').matches;
+
+    if (prefersNativeTouchScroll) {
+      document.documentElement.style.removeProperty('--scroll-skew');
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.15,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

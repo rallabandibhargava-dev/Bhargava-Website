@@ -20,9 +20,11 @@
   gap: 64px;
   align-items: start;
 }
+.contact-layout > * { min-width: 0; }
 @media (max-width: 900px) { .contact-layout { grid-template-columns: 1fr; gap: 40px; } }
 
 .contact-form { display: flex; flex-direction: column; gap: 28px; }
+.contact-form > * { min-width: 0; }
 .ff { display: flex; flex-direction: column; gap: 10px; }
 .ff__label {
   font-family: var(--font-mono);
@@ -138,6 +140,7 @@
   border-radius: 12px;
   background: var(--linen);
   border: 0.5px solid var(--rule-light);
+  min-width: 0;
 }
 .contact-card--ink { background: var(--ink); border-color: var(--rule-dark-light); }
 .contact-card__label {
@@ -228,6 +231,7 @@
   .contact-hero .eyebrow {
     white-space: normal;
     row-gap: 8px;
+    max-width: 100%;
   }
 
   .contact-hero__title {
@@ -257,5 +261,11 @@
   .contact-steps li {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+
+  .contact-form__note,
+  .contact-success__meta,
+  .contact-meta-card strong {
+    overflow-wrap: anywhere;
   }
 }
